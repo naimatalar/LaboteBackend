@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+This file is used by the publish/package process of your Web project. You can customize the behavior of this process
+by editing this MSBuild file. In order to learn more about this please visit https://go.microsoft.com/fwlink/?LinkID=208121. 
+-->
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <_PublishTargetUrl>C:\Users\HP\Desktop\ksl</_PublishTargetUrl>
+    <History>True|2022-02-04T19:41:09.1967638Z;True|2022-02-04T22:39:26.9838397+03:00;</History>
+  </PropertyGroup>
+</Project>

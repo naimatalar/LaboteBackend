@@ -1,0 +1,15 @@
+C:\Users\CORNELIUS\Desktop\LaboratuarSistem\Antegra.Core\obj\Debug\net5.0\Antegra.Core.csproj.AssemblyReference.cache
+C:\Users\CORNELIUS\Desktop\LaboratuarSistem\Antegra.Core\obj\Debug\net5.0\Antegra.Core.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\CORNELIUS\Desktop\LaboratuarSistem\Antegra.Core\obj\Debug\net5.0\Antegra.Core.AssemblyInfoInputs.cache
+C:\Users\CORNELIUS\Desktop\LaboratuarSistem\Antegra.Core\obj\Debug\net5.0\Antegra.Core.AssemblyInfo.cs
+C:\Users\CORNELIUS\Desktop\LaboratuarSistem\Antegra.Core\obj\Debug\net5.0\Antegra.Core.csproj.CoreCompileInputs.cache
+C:\Users\CORNELIUS\Desktop\LaboratuarSistem\Antegra.Core\bin\Debug\net5.0\Antegra.Core.deps.json
+C:\Users\CORNELIUS\Desktop\LaboratuarSistem\Antegra.Core\bin\Debug\net5.0\Antegra.Core.runtimeconfig.json
+C:\Users\CORNELIUS\Desktop\LaboratuarSistem\Antegra.Core\bin\Debug\net5.0\Antegra.Core.runtimeconfig.dev.json
+C:\Users\CORNELIUS\Desktop\LaboratuarSistem\Antegra.Core\bin\Debug\net5.0\Antegra.Core.dll
+C:\Users\CORNELIUS\Desktop\LaboratuarSistem\Antegra.Core\bin\Debug\net5.0\ref\Antegra.Core.dll
+C:\Users\CORNELIUS\Desktop\LaboratuarSistem\Antegra.Core\bin\Debug\net5.0\Antegra.Core.pdb
+C:\Users\CORNELIUS\Desktop\LaboratuarSistem\Antegra.Core\obj\Debug\net5.0\Antegra.Core.dll
+C:\Users\CORNELIUS\Desktop\LaboratuarSistem\Antegra.Core\obj\Debug\net5.0\ref\Antegra.Core.dll
+C:\Users\CORNELIUS\Desktop\LaboratuarSistem\Antegra.Core\obj\Debug\net5.0\Antegra.Core.pdb
+C:\Users\CORNELIUS\Desktop\LaboratuarSistem\Antegra.Core\obj\Debug\net5.0\Antegra.Core.genruntimeconfig.cache

@@ -1,0 +1,15 @@
+C:\Users\CORNELIUS\Desktop\LaboratuarSistem\Antegra.Services\bin\Debug\net5.0\Labote.Services.deps.json
+C:\Users\CORNELIUS\Desktop\LaboratuarSistem\Antegra.Services\bin\Debug\net5.0\Labote.Services.dll
+C:\Users\CORNELIUS\Desktop\LaboratuarSistem\Antegra.Services\bin\Debug\net5.0\ref\Labote.Services.dll
+C:\Users\CORNELIUS\Desktop\LaboratuarSistem\Antegra.Services\bin\Debug\net5.0\Labote.Services.pdb
+C:\Users\CORNELIUS\Desktop\LaboratuarSistem\Antegra.Services\bin\Debug\net5.0\Labote.Core.dll
+C:\Users\CORNELIUS\Desktop\LaboratuarSistem\Antegra.Services\bin\Debug\net5.0\Labote.Core.pdb
+C:\Users\CORNELIUS\Desktop\LaboratuarSistem\Antegra.Services\obj\Debug\net5.0\Labote.Services.csproj.AssemblyReference.cache
+C:\Users\CORNELIUS\Desktop\LaboratuarSistem\Antegra.Services\obj\Debug\net5.0\Labote.Services.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\CORNELIUS\Desktop\LaboratuarSistem\Antegra.Services\obj\Debug\net5.0\Labote.Services.AssemblyInfoInputs.cache
+C:\Users\CORNELIUS\Desktop\LaboratuarSistem\Antegra.Services\obj\Debug\net5.0\Labote.Services.AssemblyInfo.cs
+C:\Users\CORNELIUS\Desktop\LaboratuarSistem\Antegra.Services\obj\Debug\net5.0\Labote.Services.csproj.CoreCompileInputs.cache
+C:\Users\CORNELIUS\Desktop\LaboratuarSistem\Antegra.Services\obj\Debug\net5.0\Labote.Services.csproj.CopyComplete
+C:\Users\CORNELIUS\Desktop\LaboratuarSistem\Antegra.Services\obj\Debug\net5.0\Labote.Services.dll
+C:\Users\CORNELIUS\Desktop\LaboratuarSistem\Antegra.Services\obj\Debug\net5.0\ref\Labote.Services.dll
+C:\Users\CORNELIUS\Desktop\LaboratuarSistem\Antegra.Services\obj\Debug\net5.0\Labote.Services.pdb
