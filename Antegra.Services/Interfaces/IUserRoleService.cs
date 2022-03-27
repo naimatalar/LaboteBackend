@@ -7,8 +7,9 @@ using System.Threading.Tasks;
 
 namespace Labote.Services.Interfaces
 {
-   public interface IUserRoleService
+   public interface IUserRoleService 
     {
-        List<UserRole> GetUserRoleById(Guid Id);
+       Task< List<UserRole>> GetUserRoleById(Guid Id);
+         Task< List<string>> GetUserRoleNamesByUserId(Guid Id);
     }
 }

@@ -8,7 +8,7 @@ namespace Labote.Core.Entities
         [Key]
         public Guid Id { get; set; }
         public DateTime CreateDate { get; set; } = DateTime.Now;
-        public bool IsDelete { get; set; }
+        public bool IsDelete { get; set; } = false;
         public bool IsActive { get; set; } = true;
 
     }

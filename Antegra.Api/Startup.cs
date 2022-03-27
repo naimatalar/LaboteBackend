@@ -10,13 +10,9 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Hangfire;
 using Hangfire.SqlServer;
 using Labote.Api.BackgroundJobs;
-using Labote.Services;
 using Microsoft.AspNetCore.Identity;
 using Labote.Core.Entities;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -25,7 +21,8 @@ using System.Text;
 using Labote.Core.Constants;
 using Microsoft.Extensions.FileProviders;
 using System.IO;
-
+using Labote.Services.Interfaces;
+using Labote.Services.Services;
 
 namespace Labote.Api
 {
@@ -56,13 +53,13 @@ namespace Labote.Api
             services.AddControllersWithViews()
              .AddRazorRuntimeCompilation();
             services.AddCors();
-            services.AddDbContext<AntegraContext>(
+            services.AddDbContext<LaboteContext>(
                 options => options.UseSqlServer(Configuration.GetConnectionString("LaboteConnection")));
 
-  
 
-            services.AddIdentity<AntegraUser, UserRole>()
-            .AddEntityFrameworkStores<AntegraContext>()
+
+            services.AddIdentity<LaboteUser, UserRole>()
+            .AddEntityFrameworkStores<LaboteContext>()
             .AddDefaultTokenProviders();
 
 
@@ -140,11 +137,10 @@ namespace Labote.Api
             services.AddHangfireServer();
             services.AddRazorPages();
             services.AddControllers();
-  
-            services.AddScoped<IHangfire, HangFire>();
-       
-            services.AddScoped<IAntegraContextDbSeed, AntegraContextDbSeed>();
 
+            services.AddScoped<IHangfire, HangFire>();
+            services.AddScoped<ILaboteContextDbSeed, LaboteContextDbSeed>();
+            services.AddScoped<IUserRoleService, UserRoleService>();
 
 
 
@@ -153,14 +149,15 @@ namespace Labote.Api
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IBackgroundJobClient backgroundJobs,
             IWebHostEnvironment env,
-            IHangfire hangfire, IAntegraContextDbSeed antegraContextDbSeed)
+            IHangfire hangfire, ILaboteContextDbSeed antegraContextDbSeed)
         {
 
+            var ss = antegraContextDbSeed.MenuSeedAsync();
+            //antegraContextDbSeed.CreateDefaultRoleAsync();
+            antegraContextDbSeed.CreateRoleAndUsersAsync();
 
-            antegraContextDbSeed.CreateDefaultRole();
-            antegraContextDbSeed.MenuSeed();
-            //antegraContextDbSeed.MarketPlaceSeed(Configuration.GetSection("AntegraGetMarketPlacesUrl").Value);
-      
+
+
 
 
 

@@ -18,11 +18,11 @@ namespace Labote.Api.Controllers
     [Authorize]
     public class RoleManagerController : LaboteControllerBase
     {
-        private const string pageName = "grup-tanimlari";
-        private readonly AntegraContext _context;
-        private readonly UserManager<AntegraUser> _userManager;
+        private const string pageName = "gorev-grup";
+        private readonly LaboteContext _context;
+        private readonly UserManager<LaboteUser> _userManager;
         private readonly RoleManager<UserRole> _roleManager;
-        public RoleManagerController(AntegraContext context, UserManager<AntegraUser> userManager, RoleManager<UserRole> roleManager)
+        public RoleManagerController(LaboteContext context, UserManager<LaboteUser> userManager, RoleManager<UserRole> roleManager)
         {
             _context = context;
             _userManager = userManager;

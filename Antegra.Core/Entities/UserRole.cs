@@ -10,8 +10,11 @@ namespace Labote.Core.Entities
     public class UserRole:IdentityRole<Guid>
     {
         public virtual ICollection<UserMenuModule> UserMenuModules { get; set; }
-        public bool IsActive { get; set; }
-        public bool IsDelete { get; set; }
+        public bool IsActive { get; set; } = true;
+        public bool IsDelete { get; set; } = false;
         public bool NotDelete { get; set; }
+        //public UserTopic UserTopic { get; set; }
+        //public Guid UserTopicId { get; set; }
+
     }
 }

@@ -9,9 +9,9 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Labote.Core.Migrations
 {
-    [DbContext(typeof(AntegraContext))]
-    [Migration("20220312141640_newlabRes")]
-    partial class newlabRes
+    [DbContext(typeof(LaboteContext))]
+    [Migration("20220313215601_usertoicfg")]
+    partial class usertoicfg
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -21,7 +21,63 @@ namespace Labote.Core.Migrations
                 .HasAnnotation("ProductVersion", "5.0.12")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("Labote.Core.Entities.AntegraUser", b =>
+            modelBuilder.Entity("Labote.Core.Entities.Laboratory", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Code")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreateDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsDelete")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Laboratories");
+                });
+
+            modelBuilder.Entity("Labote.Core.Entities.LaboratoryUser", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreateDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsDelete")
+                        .HasColumnType("bit");
+
+                    b.Property<Guid?>("LaboratoryId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("LaboteUserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("LaboratoryId");
+
+                    b.HasIndex("LaboteUserId");
+
+                    b.ToTable("LaboratoryUsers");
+                });
+
+            modelBuilder.Entity("Labote.Core.Entities.LaboteUser", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -92,6 +148,9 @@ namespace Labote.Core.Migrations
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
 
+                    b.Property<Guid>("UserTopicId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.HasKey("Id");
 
                     b.HasIndex("NormalizedEmail")
@@ -101,6 +160,8 @@ namespace Labote.Core.Migrations
                         .IsUnique()
                         .HasDatabaseName("UserNameIndex")
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
+
+                    b.HasIndex("UserTopicId");
 
                     b.ToTable("AspNetUsers");
                 });
@@ -213,6 +274,29 @@ namespace Labote.Core.Migrations
                     b.ToTable("AspNetRoles");
                 });
 
+            modelBuilder.Entity("Labote.Core.Entities.UserTopic", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreateDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("CreatorUserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsDelete")
+                        .HasColumnType("bit");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("UserTopic");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
                 {
                     b.Property<int>("Id")
@@ -314,6 +398,32 @@ namespace Labote.Core.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
+            modelBuilder.Entity("Labote.Core.Entities.LaboratoryUser", b =>
+                {
+                    b.HasOne("Labote.Core.Entities.Laboratory", "Laboratory")
+                        .WithMany("LaboratoryUsers")
+                        .HasForeignKey("LaboratoryId");
+
+                    b.HasOne("Labote.Core.Entities.LaboteUser", "LaboteUser")
+                        .WithMany("LaboratoryUsers")
+                        .HasForeignKey("LaboteUserId");
+
+                    b.Navigation("Laboratory");
+
+                    b.Navigation("LaboteUser");
+                });
+
+            modelBuilder.Entity("Labote.Core.Entities.LaboteUser", b =>
+                {
+                    b.HasOne("Labote.Core.Entities.UserTopic", "UserTopic")
+                        .WithMany("LaboteUsers")
+                        .HasForeignKey("UserTopicId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("UserTopic");
+                });
+
             modelBuilder.Entity("Labote.Core.Entities.UserMenuModule", b =>
                 {
                     b.HasOne("Labote.Core.Entities.MenuModule", "MenuModel")
@@ -340,7 +450,7 @@ namespace Labote.Core.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<System.Guid>", b =>
                 {
-                    b.HasOne("Labote.Core.Entities.AntegraUser", null)
+                    b.HasOne("Labote.Core.Entities.LaboteUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -349,7 +459,7 @@ namespace Labote.Core.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<System.Guid>", b =>
                 {
-                    b.HasOne("Labote.Core.Entities.AntegraUser", null)
+                    b.HasOne("Labote.Core.Entities.LaboteUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -364,7 +474,7 @@ namespace Labote.Core.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Labote.Core.Entities.AntegraUser", null)
+                    b.HasOne("Labote.Core.Entities.LaboteUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -373,11 +483,21 @@ namespace Labote.Core.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<System.Guid>", b =>
                 {
-                    b.HasOne("Labote.Core.Entities.AntegraUser", null)
+                    b.HasOne("Labote.Core.Entities.LaboteUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("Labote.Core.Entities.Laboratory", b =>
+                {
+                    b.Navigation("LaboratoryUsers");
+                });
+
+            modelBuilder.Entity("Labote.Core.Entities.LaboteUser", b =>
+                {
+                    b.Navigation("LaboratoryUsers");
                 });
 
             modelBuilder.Entity("Labote.Core.Entities.MenuModule", b =>
@@ -388,6 +508,11 @@ namespace Labote.Core.Migrations
             modelBuilder.Entity("Labote.Core.Entities.UserRole", b =>
                 {
                     b.Navigation("UserMenuModules");
+                });
+
+            modelBuilder.Entity("Labote.Core.Entities.UserTopic", b =>
+                {
+                    b.Navigation("LaboteUsers");
                 });
 #pragma warning restore 612, 618
         }

@@ -28,6 +28,7 @@ namespace Labote.Api.Services
                 Console.WriteLine("Error writing app settings | {0}", ex.Message);
             }
         }
+       
 
         private static void SetValueRecursively<T>(string sectionPathKey, dynamic jsonObj, T value)
         {
@@ -47,5 +48,6 @@ namespace Labote.Api.Services
                 jsonObj[currentSection] = value;
             }
         }
+        
     }
 }

@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,11 +20,11 @@ namespace Labote.Api.Controllers
     [Authorize]
     public class UserManagerController : LaboteControllerBase
     {
-        private readonly AntegraContext _context;
-        private readonly UserManager<AntegraUser> _userManager;
+        private readonly LaboteContext _context;
+        private readonly UserManager<LaboteUser> _userManager;
         private readonly RoleManager<UserRole> _roleManager;
-        private const string pageName = "kullanici-olustur";
-        public UserManagerController(AntegraContext context, UserManager<AntegraUser> userManager, RoleManager<UserRole> roleManager)
+        private const string pageName = "kullanici-islemleri";
+        public UserManagerController(LaboteContext context, UserManager<LaboteUser> userManager, RoleManager<UserRole> roleManager)
         {
             _context = context;
             _userManager = userManager;
@@ -40,7 +41,6 @@ namespace Labote.Api.Controllers
                 x.Lastname,
                 x.Email,
                 x.UserName,
-
             });
             PageResponse.Data = result.ToList();
             return Ok(PageResponse);
@@ -64,8 +64,9 @@ namespace Labote.Api.Controllers
 
             var result = _context.Users;
             var roles = _context.UserRoles.Where(x => x.UserId == id).ToList();
+            var labUser = _context.LaboratoryUsers.Where(x => x.LaboteUserId == id).ToList();
             List<string> rolelist = new List<string>();
-            List<dynamic> merchantList = new List<dynamic>();
+            List<dynamic> laboratuvarList = new List<dynamic>();
 
             foreach (var item in roles)
             {
@@ -75,7 +76,14 @@ namespace Labote.Api.Controllers
                     rolelist.Add(r.Name.ToString());
                 }
             }
-   
+            foreach (var item in labUser)
+            {
+                var r = _context.LaboratoryUsers.Include(x=>x.Laboratory).Where(c => c.Id == item.Id && !c.IsDelete).FirstOrDefault();
+                if (r != null)
+                {
+                    laboratuvarList.Add(r.LaboratoryId.ToString());
+                }
+            }
 
             PageResponse.Data = result.Where(x => x.Id == id).Select(x => new
             {
@@ -89,7 +97,7 @@ namespace Labote.Api.Controllers
                     id = x,
                     text = x
                 }).ToList(),
-                MerchantList = merchantList
+                LaboratuvarList = laboratuvarList
             }).FirstOrDefault();
             return Ok(PageResponse);
         }
@@ -97,8 +105,8 @@ namespace Labote.Api.Controllers
         [PermissionCheck(Action = pageName)]
         public async Task<ActionResult<dynamic>> EditUser(CreateUserRequestModel model)
         {
-            var user = new AntegraUser();
-            using (AntegraContext context = new AntegraContext())
+            var user = new LaboteUser();
+            using (LaboteContext context = new LaboteContext())
             {
                 using (var transaction = context.Database.BeginTransaction())
                 {
@@ -122,10 +130,10 @@ namespace Labote.Api.Controllers
 
                     try
                     {
-                     
+
                         context.SaveChanges();
                         var usr = _userManager.UpdateAsync(user).Result;
-                    
+
                         if (!string.IsNullOrEmpty(model.Password))
                         {
                             var passwordToken = _userManager.GeneratePasswordResetTokenAsync(user).Result;
@@ -155,7 +163,7 @@ namespace Labote.Api.Controllers
 
 
             }
-            using (AntegraContext context = new AntegraContext())
+            using (LaboteContext context = new LaboteContext())
             {
                 using (var transaction = context.Database.BeginTransaction())
                 {
@@ -165,9 +173,7 @@ namespace Labote.Api.Controllers
                     transaction.Commit();
                 }
             }
-
-
-            using (AntegraContext context = new AntegraContext())
+            using (LaboteContext context = new LaboteContext())
             {
                 using (var transaction = context.Database.BeginTransaction())
                 {
@@ -176,10 +182,37 @@ namespace Labote.Api.Controllers
                         var rl = context.Roles.Where(x => x.Name == item).FirstOrDefault();
                         context.UserRoles.Add(new IdentityUserRole<Guid> { RoleId = rl.Id, UserId = user.Id });
                         context.SaveChanges();
-                        transaction.Commit();
-                    }
+                    }        
+                    transaction.Commit();
+
                 }
             }
+            using (LaboteContext context = new LaboteContext())
+            {
+                using (var transaction = context.Database.BeginTransaction())
+                {
+                    var rl = context.LaboratoryUsers.Where(x => x.LaboteUserId == model.Id).ToList();
+                    context.LaboratoryUsers.RemoveRange(rl);
+                    context.SaveChanges();
+                    transaction.Commit();
+                }
+            }
+
+            using (LaboteContext context = new LaboteContext())
+            {
+                using (var transaction = context.Database.BeginTransaction())
+                {
+                    foreach (var item in model.LaboratuvarList)
+                    {
+                        var rl = context.LaboratoryUsers.Where(x => x.Id == item).FirstOrDefault();
+                        context.LaboratoryUsers.Add(new LaboratoryUser { LaboratoryId = item, LaboteUserId = user.Id });
+                        context.SaveChanges();
+                       
+                    } 
+                    transaction.Commit();
+                }
+            }
+
 
             PageResponse.Data = true;
             return Ok(PageResponse);
@@ -188,35 +221,30 @@ namespace Labote.Api.Controllers
         [PermissionCheck(Action = pageName)]
         public async Task<ActionResult<dynamic>> CreateUser(CreateUserRequestModel model)
         {
-
-            using (AntegraContext context = new AntegraContext())
+            var userId = User.Identity.UserId();
+            var baseUser = _context.Users.Where(x => x.Id == userId).FirstOrDefault();
+            LaboteUser user = new LaboteUser();
+            using (LaboteContext context = new LaboteContext())
             {
-                using (var transaction = context.Database.BeginTransactionAsync())
+                using (var transaction = context.Database.BeginTransaction())
                 {
 
-                    AntegraUser user = new AntegraUser();
-
-                    user = new AntegraUser()
+                    user = new LaboteUser()
                     {
                         Email = model.Email,
                         SecurityStamp = Guid.NewGuid().ToString(),
                         UserName = model.UserName,
                         FirstName = model.FirstName,
                         Lastname = model.Lastname,
-                      
-
-
+                        UserTopicId = baseUser.UserTopicId
                     };
 
                     try
                     {
                         var usr = _userManager.CreateAsync(user, model.Password).Result;
-               
-
                         foreach (var item in model.Roles)
                         {
                             var role = _userManager.AddToRoleAsync(user, item).Result;
-
                         }
 
                     }
@@ -226,7 +254,30 @@ namespace Labote.Api.Controllers
                         PageResponse.IsError = true;
                         return Ok(PageResponse);
                     }
+                    transaction.Commit();
                 };
+            }
+
+            using (LaboteContext context = new LaboteContext())
+            {
+                using (var transaction = context.Database.BeginTransaction())
+                {
+                    foreach (var item in model.LaboratuvarList)
+                    {
+                        try
+                        {
+                            context.LaboratoryUsers.Add(new LaboratoryUser { LaboratoryId = item, LaboteUserId = user.Id });
+                            context.SaveChanges();
+
+                        }
+                        catch (Exception e)
+                        {
+
+                        }
+
+                    }
+                    transaction.Commit();
+                }
             }
             PageResponse.Data = true;
             return Ok(PageResponse);
@@ -235,8 +286,8 @@ namespace Labote.Api.Controllers
         [PermissionCheck(Action = pageName)]
         public async Task<ActionResult<dynamic>> Delete(Guid id)
         {
-            var user = new AntegraUser();
-            using (AntegraContext context = new AntegraContext())
+            var user = new LaboteUser();
+            using (LaboteContext context = new LaboteContext())
             {
                 using (var transaction = context.Database.BeginTransaction())
                 {

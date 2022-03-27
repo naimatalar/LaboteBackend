@@ -18,11 +18,11 @@ namespace Labote.Api.Controllers
     [ApiController]
     public class PermissionManagerController : LaboteControllerBase
     {
-        private const string pageName = "yetki-tanimlari";
-        private readonly AntegraContext _context;
-        private readonly UserManager<AntegraUser> _userManager;
+        private const string pageName = "yetki-islemleri";
+        private readonly LaboteContext _context;
+        private readonly UserManager<LaboteUser> _userManager;
         private readonly RoleManager<UserRole> _roleManager;
-        public PermissionManagerController(AntegraContext context, UserManager<AntegraUser> userManager, RoleManager<UserRole> roleManager)
+        public PermissionManagerController(LaboteContext context, UserManager<LaboteUser> userManager, RoleManager<UserRole> roleManager)
         {
             _context = context;
             _userManager = userManager;
@@ -71,7 +71,7 @@ namespace Labote.Api.Controllers
             {
                 var userRolemenu = _context.UserMenuModules.Include(x => x.UserRole).Where(x => x.MenuModelId == model.MenuId && x.UserRole.Id == model.RoleId).FirstOrDefault();
                 var menu = _context.MenuModules.Where(x => x.Id == model.MenuId || x.ParentId == model.MenuId).ToList();
-                if (userRolemenu != null && userRolemenu.UserRole.NotDelete)
+                if (userRolemenu?.UserRole?.Name == "Admin")
                 {
                     PageResponse.IsError = true;
                     PageResponse.Message = "Bu Kayıt Birincil Kayıttır Değiştirilemez.";
@@ -94,7 +94,6 @@ namespace Labote.Api.Controllers
                     }
                     foreach (var item in menu)
                     {
-
                         _context.UserMenuModules.Add(new UserMenuModule
                         {
                             MenuModelId = item.Id,
@@ -113,15 +112,15 @@ namespace Labote.Api.Controllers
                             var submenuList = _context.MenuModules.Where(x => x.ParentId == item.Id).ToList();
                             foreach (var jitem in submenuList)
                             {
-                                var rls = _context.UserMenuModules.Include(x=>x.UserRole).Include(x => x.UserRole).Where(x => x.MenuModelId == jitem.Id && x.UserRole.Id==model.RoleId);
+                                var rls = _context.UserMenuModules.Include(x => x.UserRole).Include(x => x.UserRole).Where(x => x.MenuModelId == jitem.Id && x.UserRole.Id == model.RoleId);
                                 _context.UserMenuModules.RemoveRange(rls);
                             }
                         }
                     }
                     foreach (var item in menu)
                     {
-                        
-                        var rls = _context.UserMenuModules.Include(x=>x.UserRole).Where(x => x.MenuModelId == item.Id || x.MenuModelId == item.ParentId).Where(x=>x.UserRole.Id == model.RoleId).ToList();
+
+                        var rls = _context.UserMenuModules.Include(x => x.UserRole).Where(x => x.MenuModelId == item.Id || x.MenuModelId == item.ParentId).Where(x => x.UserRole.Id == model.RoleId).ToList();
                         _context.UserMenuModules.RemoveRange(rls);
                     }
                     _context.SaveChanges();
@@ -136,20 +135,20 @@ namespace Labote.Api.Controllers
             return Ok(PageResponse);
         }
 
-      
+
         [HttpGet("FrontEndPermissionCheck/{pagename}")]
         public async Task<ActionResult<dynamic>> FrontEndPermissionCheck(string pagename)
         {
             var userId = User.Identity.UserId();
             var mmoduls = new List<string>();
-            using (AntegraContext dbcontext = new AntegraContext())
+            using (LaboteContext dbcontext = new LaboteContext())
             {
                 using (var transaction = dbcontext.Database.BeginTransaction())
                 {
                     var roles = dbcontext.UserRoles.Where(x => x.UserId == userId).ToList();
                     foreach (var item in roles)
                     {
-                        var menuModuls = dbcontext.UserMenuModules.Include(x=>x.UserRole).Where(x => x.UserRoleId == item.RoleId && !x.MenuModel.IsHidden).Where(x=>!x.UserRole.IsDelete).Select(x => x.MenuModel).ToList();
+                        var menuModuls = dbcontext.UserMenuModules.Include(x => x.UserRole).Where(x => x.UserRoleId == item.RoleId && !x.MenuModel.IsHidden).Where(x => !x.UserRole.IsDelete).Select(x => x.MenuModel).ToList();
                         foreach (var jitem in menuModuls)
                         {
                             mmoduls.Add(jitem.PageUrl);
@@ -178,7 +177,8 @@ namespace Labote.Api.Controllers
             try
             {
                 var userRolemenu = _context.UserMenuModules.Include(x => x.UserRole).Where(x => x.MenuModelId == model.MenuId && x.UserRoleId == model.RoleId).FirstOrDefault();
-                if (userRolemenu != null && userRolemenu.UserRole.NotDelete)
+
+                if (userRolemenu?.UserRole?.Name == "Admin")
                 {
                     PageResponse.IsError = true;
                     PageResponse.Message = "Bu Kayıt Birincil Kayıttır Değiştirilemez.";
@@ -215,8 +215,12 @@ namespace Labote.Api.Controllers
 
                         }
                     }
-                    //var rls = _context.UserMenuModules.Where(x => x.MenuModelId == menu.Id).FirstOrDefault();
-                    //_context.UserMenuModules.Remove(rls);
+                    else
+                    {
+                        var rls = _context.UserMenuModules.Where(x => x.MenuModelId == model.MenuId&& x.UserRoleId == model.RoleId).FirstOrDefault();
+                        _context.UserMenuModules.Remove(rls);
+                    }
+
 
                     _context.SaveChanges();
                 }

@@ -17,7 +17,7 @@ namespace Labote.Api
         public static void Main(string[] args)
         {
 
-            CreateHostBuilder(args).Build().MigrateDbContext<AntegraContext>().Run();
+            CreateHostBuilder(args).Build().MigrateDbContext<LaboteContext>().Run();
         }
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>

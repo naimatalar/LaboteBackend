@@ -13,10 +13,10 @@ namespace Labote.Api.BackgroundJobs
     public class HangFire : IHangfire
     {
 
-        private readonly AntegraContext _context;
+        private readonly LaboteContext _context;
 
 
-        public HangFire( AntegraContext context)
+        public HangFire( LaboteContext context)
         {
 
             _context = context;

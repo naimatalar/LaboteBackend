@@ -3,34 +3,38 @@ using Labote.Core.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
+using System.IO;
 
 namespace Labote.Core
 {
-    public class AntegraContext : IdentityDbContext<AntegraUser, UserRole, Guid>
+    public class LaboteContext : IdentityDbContext<LaboteUser, UserRole, Guid>
     {
+       
+        public IConfiguration Configuration { get; }
 
+ 
 
-
-
-        public AntegraContext()
+        public LaboteContext()
         {
-
-        }
-
-        public AntegraContext(DbContextOptions<AntegraContext> options) : base(options)
-        {
-
            
+        }
+  
+        public LaboteContext(DbContextOptions<LaboteContext> options) : base(options)
+        {
+
+
         }
 
         public DbSet<MenuModule> MenuModules { get; set; }
         public DbSet<UserMenuModule> UserMenuModules { get; set; }
+        public DbSet<Laboratory> Laboratories { get; set; }
+        public DbSet<LaboratoryUser> LaboratoryUsers { get; set; }
+        public DbSet<UserTopic> UserTopics { get; set; }
+        public DbSet<Device> Devices { get; set; }
+        public DbSet<LaboratoryDevice> LaboratoryDevices { get; set; }
 
         //public DbSet<JobScheduleTime> JobScheduleTimes { get; set; }
 
@@ -41,7 +45,11 @@ namespace Labote.Core
             if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-                optionsBuilder.UseSqlServer("Data Source=.;Initial Catalog=AntegraDb;Integrated security=True;");
+
+                string json = File.ReadAllText("appsettings.json");
+                dynamic jsonObj = Newtonsoft.Json.JsonConvert.DeserializeObject(json);
+                string connectionString = jsonObj.ConnectionStrings.LaboteConnection.ToString() ;
+                optionsBuilder.UseSqlServer(connectionString);
             }
         }
 
@@ -55,6 +63,13 @@ namespace Labote.Core
 
         }
 
+        public override bool Equals(object obj)
+        {
+            return obj is LaboteContext context &&
+                   base.Equals(obj) &&
+                   EqualityComparer<IConfiguration>.Default.Equals(Configuration, context.Configuration);
+        }
     }
+
 }
 

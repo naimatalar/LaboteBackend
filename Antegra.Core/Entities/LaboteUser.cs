@@ -7,18 +7,20 @@ using System.Threading.Tasks;
 
 namespace Labote.Core.Entities
 {
-    public class AntegraUser : IdentityUser<Guid>
+    public class LaboteUser : IdentityUser<Guid>
     {
 
         public string FirstName { get; set; }
         public string Lastname { get; set; }
-       
+        public UserTopic UserTopic { get; set; }
+        public Guid UserTopicId { get; set; }
         public string ConfirmCode { get; set; }
         public bool IsActive { get; set; }
         public bool IsDelete { get; set; }
         public bool NotDelete { get; set; }
+       
 
-        //public virtual ICollection<AntegraMerchant> AntegraMerchants { get; set; }
+        public virtual ICollection<LaboratoryUser> LaboratoryUsers { get; set; }
 
 
 

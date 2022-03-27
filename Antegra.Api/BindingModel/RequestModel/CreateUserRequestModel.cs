@@ -14,6 +14,6 @@ namespace Labote.Api.BindingModel.RequestModel
         public string Email { get; set; }
         public string Password { get; set; }
         public IList<string> Roles { get; set; }
-        public List<Guid> MerchantList { get; set; }
+        public List<Guid> LaboratuvarList { get; set; }
     }
 }

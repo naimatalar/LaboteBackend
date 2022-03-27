@@ -3,9 +3,9 @@ using Labote.Api.Controllers.LaboteController;
 using Labote.Core;
 using Labote.Core.Constants;
 using Labote.Core.Entities;
+using Labote.Services;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
+
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
@@ -25,11 +25,11 @@ namespace Labote.Api.Controllers
     [ApiController]
     public class AuthController : LaboteControllerBase
     {
-        private readonly UserManager<AntegraUser> _userManager;
+        private readonly UserManager<LaboteUser> _userManager;
         private readonly RoleManager<UserRole> _roleManager;
-        private readonly AntegraContext _context;
+        private readonly LaboteContext _context;
 
-        public AuthController(UserManager<AntegraUser> userManager, AntegraContext context, RoleManager<UserRole> roleManager)
+        public AuthController(UserManager<LaboteUser> userManager, LaboteContext context, RoleManager<UserRole> roleManager)
         {
             _userManager = userManager;
             _context = context;
@@ -45,7 +45,7 @@ namespace Labote.Api.Controllers
                 var user = await _userManager.FindByNameAsync(model.UserName);
                 var userFromMail = await _userManager.FindByEmailAsync(model.UserName);
 
-                if (user==null && userFromMail==null)
+                if (user == null && userFromMail == null)
                 {
                     return Ok(new
                     {
@@ -55,7 +55,7 @@ namespace Labote.Api.Controllers
                     });
                 }
                 user = user == null ? userFromMail : user;
-                if ((user != null || userFromMail!=null) && await _userManager.CheckPasswordAsync(user, model.Password))
+                if ((user != null || userFromMail != null) && await _userManager.CheckPasswordAsync(user, model.Password))
                 {
                     var userRoles = await _userManager.GetRolesAsync(user);
                     var authClaims = new List<Claim>
@@ -102,24 +102,37 @@ namespace Labote.Api.Controllers
         [HttpGet("CheckLogin")]
         public async Task<ActionResult<dynamic>> CheckLogin()
         {
-            try
+            if (User.Identity.IsAuthenticated == false)
             {
-               
-                var userExist = _userManager.Users.Any();
-
                 return Ok(new
                 {
-                   
-                    UserExist = userExist,
-                    Auth = User.Identity.IsAuthenticated
+
+                    UserExist = false,
+                    Auth = false
                 });
 
             }
-            catch (Exception e)
+            var userId = User.Identity.UserId();
+            var userExist = _userManager.Users.Where(x => x.Id == userId).FirstOrDefault();
+
+            if (userExist == null)
+            {
+                return Ok(new
+                {
+
+                    UserExist = false,
+                    Auth = false
+                });
+            }
+
+            return Ok(new
             {
 
+                UserExist = userExist,
+                Auth = User.Identity.IsAuthenticated
+            });
 
-            }
+
 
             return Unauthorized();
         }
@@ -127,27 +140,37 @@ namespace Labote.Api.Controllers
 
 
 
-   
-
         [AllowAnonymous]
-        [HttpPost("UserCreate")]
-        public async Task<ActionResult<dynamic>> UserCreate(UserCreateRequestModel model)
+        [HttpPost("SignUp")]
+        public async Task<ActionResult<dynamic>> SignUp(UserCreateRequestModel model)
         {
 
             try
             {
                 if (ModelState.IsValid)
                 {
-                 
+                    var userTopic = new UserTopic
+                    {
+                        Code = Guid.NewGuid().ToString("n"),
 
-                    using (AntegraContext context = new AntegraContext())
+                    };
+                    using (LaboteContext context = new LaboteContext())
                     {
                         using (var transaction = context.Database.BeginTransactionAsync())
                         {
-                            AntegraUser user = new AntegraUser();
+                            context.UserTopics.Add(userTopic);
+                        }
+                    }
+
+
+                    using (LaboteContext context = new LaboteContext())
+                    {
+                        using (var transaction = context.Database.BeginTransactionAsync())
+                        {
+                            LaboteUser user = new LaboteUser();
                             if (_userManager.Users.Count() == 0)
                             {
-                                user = new AntegraUser()
+                                user = new LaboteUser()
                                 {
                                     Email = model.Email,
                                     SecurityStamp = Guid.NewGuid().ToString(),
@@ -166,18 +189,19 @@ namespace Labote.Api.Controllers
                     }
 
 
-                    using (AntegraContext context = new AntegraContext())
+                    using (LaboteContext context = new LaboteContext())
                     {
                         using (var transaction = context.Database.BeginTransaction())
                         {
                             var data = context.MenuModules.ToList();
-                            var role = context.UserRoles.FirstOrDefault();
+                            
 
                             foreach (var item in data)
                             {
-                                context.UserMenuModules.Add(new UserMenuModule{
-                                UserRoleId=role.RoleId,
-                                MenuModelId=item.Id
+                                context.UserMenuModules.Add(new UserMenuModule
+                                {
+                                    //UserRoleId = role.RoleId,
+                                    MenuModelId = item.Id
                                 });
                             }
                             context.SaveChanges();

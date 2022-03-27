@@ -18,10 +18,10 @@ namespace Labote.Api.Controllers
     [Authorize]
     public class LayoutController : LaboteControllerBase
     {
-        private readonly UserManager<AntegraUser> _userManager;
+        private readonly UserManager<LaboteUser> _userManager;
         private readonly RoleManager<UserRole> _userRole;
-        private readonly AntegraContext _context;
-        public LayoutController(UserManager<AntegraUser> userManager, RoleManager<UserRole> userRole, AntegraContext context)
+        private readonly LaboteContext _context;
+        public LayoutController(UserManager<LaboteUser> userManager, RoleManager<UserRole> userRole, LaboteContext context)
         {
             _userManager = userManager;
             _userRole = userRole;
@@ -68,7 +68,7 @@ namespace Labote.Api.Controllers
 
                 throw;
             }
-
+            
             return Ok(PageResponse);
         }
     }

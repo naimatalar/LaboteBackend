@@ -1,12 +1,13 @@
 ﻿using Labote.Core;
 using Labote.Core.Entities;
+using Labote.Services.BindingModel;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
+
 
 namespace Labote.Services
 {
@@ -23,7 +24,7 @@ namespace Labote.Services
         {
             var userId = context.HttpContext.User.Identity.UserId();
             var mmoduls = new List<string>();
-            using (AntegraContext dbcontext = new AntegraContext())
+            using (LaboteContext dbcontext = new LaboteContext())
             {
                 using (var transaction = dbcontext.Database.BeginTransaction())
                 {
@@ -45,7 +46,10 @@ namespace Labote.Services
             var permission = mmoduls.Where(x => x == Action).Any();
             if (!permission)
             {
+     
+
                 context.HttpContext.Response.StatusCode = 403;
+
                 throw new MethodAccessException("Yetkisiz İşlem");
             }
 
