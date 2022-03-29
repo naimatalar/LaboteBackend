@@ -34,6 +34,22 @@ namespace Labote.Core.Constants
             [Display(Name = "EPA", Description = "pttavm.com")]
             EPttAvm = 7
         }
+        public enum SampleExaminationCurrencyType
+        {
+            [Display( Description = "TRY")]
+            TRY = 1,
+            [Display(Description = "USD")]
+            USD = 2,
+            [Display(Description = "EURO")]
+            EURO = 3,
+            [Display( Description = "GBP")]
+            GBP = 4,
+            [Display( Description = "RUB")]
+            RUB = 5,
+            [Display(Name = "CNY", Description = "CNY")]
+            CNY = 6,
+          
+        }
 
         public enum JobScheduleTimeType
         {
@@ -43,6 +59,18 @@ namespace Labote.Core.Constants
             Hour = 2,
             [Display(Description = "Gün")]
             Day = 3,
+        } 
+        public enum MeasureUnitType
+        {
+            [Display(Description = "Yüzde")]
+            Percent = 1,
+            [Display(Description = "Ondalık")]
+            Decimal = 2,
+            [Display(Description = "Sayısal")]
+            Integer = 3,
+            [Display(Description = "Karakter")]
+            Char = 4,
+
         }
         public enum MarketPlaceEndpointType
         {

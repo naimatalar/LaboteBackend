@@ -89,8 +89,8 @@ namespace Labote.Core
                             {
                                 Name = Enums.Admin.ToString(),
                                 NormalizedName = Enums.Admin.ToString().ToUpper(),
-                                NotDelete=true
-                                
+                                NotDelete = true
+
                             }).Result;
                             var userRol = _roleManager.CreateAsync(
                                 new UserRole
@@ -242,7 +242,7 @@ namespace Labote.Core
                             OrderNumber = 3
                         });
                     }
-               
+
                     context.SaveChanges();
                     transaction.Commit();
                 }
@@ -277,8 +277,7 @@ namespace Labote.Core
             {
                 using (var transaction = context.Database.BeginTransaction())
                 {
-                   
-                   
+
                     if (!MenuList.Any(x => x.PageName == "Laboratuvar Tanımlama"))
                     {
                         context.Add(new MenuModule
@@ -313,6 +312,26 @@ namespace Labote.Core
                     transaction.Commit();
                 }
             }
+
+            using (LaboteContext context = new LaboteContext())
+            {
+                using (var transaction = context.Database.BeginTransaction())
+                {
+                    if (!MenuList.Any(x => x.PageName == "Tetkik Tanımlama"))
+                    {
+                        context.Add(new MenuModule
+                        {
+                            PageName = "Tetkik Tanımlama",
+                            PageUrl = "tetkik-tanimlama",
+                            ParentId = Sistem.Id,
+                            OrderNumber = 3
+                        });
+                    }
+                    context.SaveChanges();
+                    transaction.Commit();
+                }
+            }
+
             #endregion
 
 

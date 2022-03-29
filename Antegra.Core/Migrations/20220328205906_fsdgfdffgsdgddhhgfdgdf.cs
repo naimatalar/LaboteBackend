@@ -2,13 +2,13 @@
 
 namespace Labote.Core.Migrations
 {
-    public partial class fffsdfsdkj : Migration
+    public partial class fsdgfdffgsdgddhhgfdgdf : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.AddColumn<string>(
-                name: "Description",
-                table: "Laboratories",
+                name: "SampleMethod",
+                table: "SampleExaminations",
                 type: "nvarchar(max)",
                 nullable: true);
         }
@@ -16,8 +16,8 @@ namespace Labote.Core.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropColumn(
-                name: "Description",
-                table: "Laboratories");
+                name: "SampleMethod",
+                table: "SampleExaminations");
         }
     }
 }

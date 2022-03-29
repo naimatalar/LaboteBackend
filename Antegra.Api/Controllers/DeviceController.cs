@@ -2,6 +2,7 @@
 using Labote.Api.BindingModel.RequestModel;
 using Labote.Api.Controllers.LaboteController;
 using Labote.Core;
+using Labote.Core.Constants;
 using Labote.Core.Entities;
 using Labote.Services;
 using Labote.Services.Interfaces;
@@ -19,14 +20,14 @@ namespace Labote.Api.Controllers
     public class DeviceController : LaboteControllerBase
     {
         private readonly LaboteContext _context;
-     
+
 
         private const string pageName = "cihaz-tanimlama";
 
         public DeviceController(LaboteContext context, IUserRoleService userRoleService)
         {
             _context = context;
-     
+
         }
 
         [HttpGet("GetCurrentTopicDevice")]
@@ -47,7 +48,7 @@ namespace Labote.Api.Controllers
         [HttpGet("GetAllCurrentLaboratoryDevice/{LaboratoryId}")]
         public async Task<dynamic> GetAllCurrentDevice(Guid LaboratoryId)
         {
-           
+
             var deviceUsers = _context.LaboratoryDevices.Where(x => x.LaboratoryId == LaboratoryId).Select(x => new
             {
                 x.Device.Name,
@@ -79,13 +80,13 @@ namespace Labote.Api.Controllers
         {
             var userId = User.Identity.UserId();
             var user = _context.Users.Where(x => x.Id == userId).FirstOrDefault();
-           
+
             var labb = new Device();
             using (var context = new LaboteContext())
             {
                 using (var transaction = context.Database.BeginTransaction())
                 {
-                
+
                     if (model.Id == null)
                     {
                         labb = new Device
@@ -93,8 +94,8 @@ namespace Labote.Api.Controllers
                             Code = model.Code,
                             Description = model.Description,
                             Name = model.Name,
-                            Brand=model.Brand,
-                            Model=model.Model,
+                            Brand = model.Brand,
+                            Model = model.Model,
                             UserTopicId = user.UserTopicId,
                         };
                         context.Devices.Add(labb);
@@ -120,7 +121,7 @@ namespace Labote.Api.Controllers
                     Refres = false
                 };
             }
-  
+
 
             return PageResponse;
         }
@@ -131,8 +132,8 @@ namespace Labote.Api.Controllers
             try
             {
                 var userId = User.Identity.UserId();
-              
-                var laboteUser = _context.Users.Include(x=>x.UserTopic).ThenInclude(x=>x.Devices).FirstOrDefault(x => x.Id == userId).UserTopic.Devices
+
+                var laboteUser = _context.Users.Include(x => x.UserTopic).ThenInclude(x => x.Devices).FirstOrDefault(x => x.Id == userId).UserTopic.Devices
                                .Select(x => new
                                {
                                    x.Id,
@@ -142,7 +143,7 @@ namespace Labote.Api.Controllers
                                    x.Code,
                                    x.Description
                                }).ToList();
-                
+
                 PageResponse.Data = laboteUser;
             }
             catch (Exception e)
@@ -161,7 +162,8 @@ namespace Labote.Api.Controllers
             {
 
                 var devices = _context.LaboratoryDevices.Where(x => x.LaboratoryId == Id)
-                               .Select(y =>new {
+                               .Select(y => new
+                               {
 
                                    Id = y.Device.Id,
                                    Name = y.Device.Name,
@@ -169,7 +171,7 @@ namespace Labote.Api.Controllers
                                    Model = y.Device.Model,
                                    Code = y.Device.Code,
                                    Description = y.Device.Description
-                               } ).ToList();
+                               }).ToList();
 
                 PageResponse.Data = devices;
             }
@@ -186,7 +188,7 @@ namespace Labote.Api.Controllers
         {
             var userId = User.Identity.UserId();
             var currentUser = _context.Users.Where(x => x.Id == userId).FirstOrDefault();
-            if (currentUser==null)
+            if (currentUser == null)
             {
                 PageResponse.IsError = true;
                 PageResponse.Message = "Kullanıcı bulunamadı";
@@ -202,9 +204,9 @@ namespace Labote.Api.Controllers
                                    x.Model,
                                    x.Description,
                                    x.Code,
-                             x.Name
+                                   x.Name
                                }).ToList();
-          
+
                 PageResponse.Data = laboteUser;
             }
             catch (Exception e)
@@ -222,8 +224,8 @@ namespace Labote.Api.Controllers
         {
             if (model.Action == 1)
             {
-               
-                if (_context.LaboratoryDevices.Any(x => x.DeviceId == model.DeviceId && x.LaboratoryId==model.LaboratoryId))
+
+                if (_context.LaboratoryDevices.Any(x => x.DeviceId == model.DeviceId && x.LaboratoryId == model.LaboratoryId))
                 {
                     PageResponse.IsError = true;
                     PageResponse.Message = "Bu kullanıcı bu laboratuvara zaten atanmış";
@@ -246,5 +248,137 @@ namespace Labote.Api.Controllers
             return true;
         }
 
+        [HttpGet("GetDeviceResultValueType/{DeviceId}")]
+        public async Task<dynamic> GetDeviceResultValueType(Guid DeviceId)
+        {
+           var data= _context.DeviceResultValueTypes.Where(x => x.DeviceId == DeviceId).Select(x => new
+            {
+               x.Id,
+                x.MeasurementUnit,
+                x.MeasurementUnitLongName,
+                x.MeasureUnitType,
+                MeasureUnitTypeName = x.MeasureUnitType.GetDisiplayDescription(),
+                x.MeasureUnitSymbol,
+     
+
+            });
+
+
+            PageResponse.Data = data;
+            return PageResponse;
+        }
+
+        [HttpGet("GetDeviceResultValueSampleUnitReferences/{DeviceId}")]
+        public async Task<dynamic> GetDeviceResultValueSampleUnitReferences(Guid DeviceId)
+        {
+            var data = _context.DeviceResultValueSampleUnitReferences.Where(x => x.DeviceId == DeviceId).Select(x => new
+            {
+                x.Id,
+                x.MeasurementUnit,
+                x.MeasurementUnitLongName,
+                x.MeasureUnitType,
+                MeasureUnitTypeName = x.MeasureUnitType.GetDisiplayDescription(),
+                x.MeasureUnitSymbol,
+            });
+
+
+            PageResponse.Data = data;
+            return PageResponse;
+        }
+
+
+        [HttpPost("CreateDeviceResultValueType")]
+        [PermissionCheck(Action = pageName)]
+        public async Task<dynamic> CreateDeviceResultValueType(CreateDeviceResultValueTypeModel model)
+        {
+            var ress = new DeviceResultValueType();
+            if (model.Id == null)
+            {
+                ress = new DeviceResultValueType
+                {
+                    DeviceId = model.DeviceId,
+                    MeasurementUnit = model.MeasurementUnit,
+                    MeasurementUnitLongName = model.MeasurementUnitLongName,
+                    MeasureUnitSymbol = model.MeasureUnitSymbol,
+                    MeasureUnitType = (Core.Constants.Enums.MeasureUnitType)model.MeasureUnitType,
+                };
+                _context.DeviceResultValueTypes.Add(ress);
+                _context.SaveChanges();
+            }
+            else
+            {
+                var data = _context.DeviceResultValueTypes.Where(x => x.Id == model.Id).FirstOrDefault();
+                data.DeviceId = model.DeviceId;
+                data.MeasurementUnit = model.MeasurementUnit;
+                data.MeasurementUnitLongName = model.MeasurementUnitLongName;
+                data.MeasureUnitSymbol = model.MeasureUnitSymbol;
+                data.MeasureUnitType = (Core.Constants.Enums.MeasureUnitType)model.MeasureUnitType;
+                ress = data;
+                _context.Update(data);
+                _context.SaveChanges();
+            }
+
+            PageResponse.Data = ress;
+            return PageResponse;
+        }
+       
+    
+        [HttpPost("CreateDeviceResultValueTypeSampleReference")]
+        [PermissionCheck(Action = pageName)]
+        public async Task<dynamic> CreateDeviceResultValueTypeSampleReference(CreateDeviceResultValueTypeSampleReferenceRequestModel model)
+        {
+            var ress = new DeviceResultValueSampleUnitReference();
+            if (model.Id == null)
+            {
+                ress = new DeviceResultValueSampleUnitReference
+                {
+                    DeviceId = model.DeviceId,
+                    MeasurementUnit = model.MeasurementUnit,
+                    MeasurementUnitLongName = model.MeasurementUnitLongName,
+                    MeasureUnitSymbol = model.MeasureUnitSymbol,
+                    MeasureUnitType = (Core.Constants.Enums.MeasureUnitType)model.MeasureUnitType,
+                };
+                _context.DeviceResultValueSampleUnitReferences.Add(ress);
+                _context.SaveChanges();
+            }
+            else
+            {
+                var data = _context.DeviceResultValueSampleUnitReferences.Where(x => x.Id == model.Id).FirstOrDefault();
+                data.DeviceId = model.DeviceId;
+                data.MeasurementUnit = model.MeasurementUnit;
+                data.MeasurementUnitLongName = model.MeasurementUnitLongName;
+                data.MeasureUnitSymbol = model.MeasureUnitSymbol;
+                data.MeasureUnitType = (Core.Constants.Enums.MeasureUnitType)model.MeasureUnitType;
+                ress = data;
+                _context.Update(data);
+                _context.SaveChanges();
+            }
+            PageResponse.Data = ress;
+            return PageResponse;
+        }
+
+     
+        [HttpGet("DeleteDeviceResultValueTypeSampleReference/{Id}")]
+        [PermissionCheck(Action = pageName)]
+        public async Task<dynamic> DeleteDeviceResultValueTypeSampleReference(Guid Id)
+        {
+
+           var  data=_context.DeviceResultValueSampleUnitReferences.Where(x => x.Id == Id).FirstOrDefault();
+            _context.DeviceResultValueSampleUnitReferences.Remove(data);
+            _context.SaveChanges();
+            return PageResponse;
+        }
+      
+        
+        [HttpGet("DeleteDeviceResultValueType/{Id}")]
+        [PermissionCheck(Action = pageName)]
+        public async Task<dynamic> DeleteDeviceResultValueType(Guid Id)
+        {
+
+           var  data=_context.DeviceResultValueTypes.Where(x => x.Id == Id).FirstOrDefault();
+            _context.DeviceResultValueTypes.Remove(data);
+            _context.SaveChanges();
+            return PageResponse;
+        }
     }
 }

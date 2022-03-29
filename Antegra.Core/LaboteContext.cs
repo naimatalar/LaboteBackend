@@ -36,7 +36,12 @@ namespace Labote.Core
         public DbSet<Device> Devices { get; set; }
         public DbSet<LaboratoryDevice> LaboratoryDevices { get; set; }
 
-        //public DbSet<JobScheduleTime> JobScheduleTimes { get; set; }
+        public DbSet<DeviceResultValueType> DeviceResultValueTypes { get; set; }
+        public DbSet<DeviceResultValueSampleUnitReference> DeviceResultValueSampleUnitReferences { get; set; }
+
+        public DbSet<SampleExamination> SampleExaminations { get; set; }
+        public DbSet<SampleExaminationDevice> SampleExaminationDevice { get; set; }
+             public DbSet<SampleExaminationPriceCurrency> SampleExaminationPriceCurrencies { get; set; }
 
 
 
@@ -56,9 +61,9 @@ namespace Labote.Core
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
-            //     builder.Entity<AntegraUser>()
-            //.HasOne(p => p.AppInfo)
-            //.WithMany(b => b.AntegraUsers).OnDelete(DeleteBehavior.Restrict);
+            builder.Entity<SampleExamination>()
+       .HasOne(p => p.UserTopic)
+       .WithMany(b => b.SampleExaminations).OnDelete(DeleteBehavior.Restrict);
 
 
         }

@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Labote.Core.Migrations
 {
     [DbContext(typeof(LaboteContext))]
-    [Migration("20220313215601_usertoicfg")]
-    partial class usertoicfg
+    [Migration("20220327222128_fsdgfdffgsdgddhhgfd")]
+    partial class fsdgfdffgsdgddhhgfd
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -20,6 +20,129 @@ namespace Labote.Core.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("ProductVersion", "5.0.12")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+            modelBuilder.Entity("Labote.Core.Entities.Device", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Brand")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Code")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreateDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid?>("CreatorUserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsDelete")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Model")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("UserTopicId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserTopicId");
+
+                    b.ToTable("Devices");
+                });
+
+            modelBuilder.Entity("Labote.Core.Entities.DeviceResultValueSampleUnitReference", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreateDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid?>("CreatorUserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("DeviceId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsDelete")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("MeasureUnitSymbol")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("MeasureUnitType")
+                        .HasColumnType("int");
+
+                    b.Property<string>("MeasurementUnit")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("MeasurementUnitLongName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DeviceId");
+
+                    b.ToTable("DeviceResultValueSampleUnitReferences");
+                });
+
+            modelBuilder.Entity("Labote.Core.Entities.DeviceResultValueType", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreateDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid?>("CreatorUserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("DeviceId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsDelete")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("MeasureUnitSymbol")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("MeasureUnitType")
+                        .HasColumnType("int");
+
+                    b.Property<string>("MeasurementUnit")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("MeasurementUnitLongName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DeviceId");
+
+                    b.ToTable("DeviceResultValueTypes");
+                });
 
             modelBuilder.Entity("Labote.Core.Entities.Laboratory", b =>
                 {
@@ -33,6 +156,12 @@ namespace Labote.Core.Migrations
                     b.Property<DateTime>("CreateDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<Guid?>("CreatorUserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
 
@@ -42,9 +171,47 @@ namespace Labote.Core.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<Guid>("UserTopicId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.HasKey("Id");
 
+                    b.HasIndex("UserTopicId");
+
                     b.ToTable("Laboratories");
+                });
+
+            modelBuilder.Entity("Labote.Core.Entities.LaboratoryDevice", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreateDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid?>("CreatorUserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("DeviceId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsDelete")
+                        .HasColumnType("bit");
+
+                    b.Property<Guid?>("LaboratoryId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DeviceId");
+
+                    b.HasIndex("LaboratoryId");
+
+                    b.ToTable("LaboratoryDevices");
                 });
 
             modelBuilder.Entity("Labote.Core.Entities.LaboratoryUser", b =>
@@ -55,6 +222,9 @@ namespace Labote.Core.Migrations
 
                     b.Property<DateTime>("CreateDate")
                         .HasColumnType("datetime2");
+
+                    b.Property<Guid?>("CreatorUserId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
@@ -175,6 +345,9 @@ namespace Labote.Core.Migrations
                     b.Property<DateTime>("CreateDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<Guid?>("CreatorUserId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<string>("IconName")
                         .HasColumnType("nvarchar(max)");
 
@@ -207,6 +380,110 @@ namespace Labote.Core.Migrations
                     b.ToTable("MenuModules");
                 });
 
+            modelBuilder.Entity("Labote.Core.Entities.SampleExamination", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreateDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid?>("CreatorUserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsDelete")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Unit")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("UserTopicId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserTopicId");
+
+                    b.ToTable("SampleExaminations");
+                });
+
+            modelBuilder.Entity("Labote.Core.Entities.SampleExaminationDevice", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreateDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid?>("CreatorUserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("DeviceId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsDelete")
+                        .HasColumnType("bit");
+
+                    b.Property<Guid>("SampleExaminationId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DeviceId");
+
+                    b.HasIndex("SampleExaminationId");
+
+                    b.ToTable("SampleExaminationDevice");
+                });
+
+            modelBuilder.Entity("Labote.Core.Entities.SampleExaminationPriceCurrency", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreateDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid?>("CreatorUserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("CurrenyType")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsDelete")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("Price")
+                        .HasColumnType("int");
+
+                    b.Property<Guid>("SampleExaminationId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("SampleExaminationId");
+
+                    b.ToTable("SampleExaminationPriceCurrencies");
+                });
+
             modelBuilder.Entity("Labote.Core.Entities.UserMenuModule", b =>
                 {
                     b.Property<Guid>("Id")
@@ -215,6 +492,9 @@ namespace Labote.Core.Migrations
 
                     b.Property<DateTime>("CreateDate")
                         .HasColumnType("datetime2");
+
+                    b.Property<Guid?>("CreatorUserId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
@@ -264,12 +544,17 @@ namespace Labote.Core.Migrations
                     b.Property<bool>("NotDelete")
                         .HasColumnType("bit");
 
+                    b.Property<Guid?>("UserTopicId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.HasKey("Id");
 
                     b.HasIndex("NormalizedName")
                         .IsUnique()
                         .HasDatabaseName("RoleNameIndex")
                         .HasFilter("[NormalizedName] IS NOT NULL");
+
+                    b.HasIndex("UserTopicId");
 
                     b.ToTable("AspNetRoles");
                 });
@@ -280,10 +565,13 @@ namespace Labote.Core.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<string>("Code")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<DateTime>("CreateDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<Guid>("CreatorUserId")
+                    b.Property<Guid?>("CreatorUserId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<bool>("IsActive")
@@ -294,7 +582,7 @@ namespace Labote.Core.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("UserTopic");
+                    b.ToTable("UserTopics");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
@@ -398,6 +686,65 @@ namespace Labote.Core.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
+            modelBuilder.Entity("Labote.Core.Entities.Device", b =>
+                {
+                    b.HasOne("Labote.Core.Entities.UserTopic", "UserTopic")
+                        .WithMany("Devices")
+                        .HasForeignKey("UserTopicId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("UserTopic");
+                });
+
+            modelBuilder.Entity("Labote.Core.Entities.DeviceResultValueSampleUnitReference", b =>
+                {
+                    b.HasOne("Labote.Core.Entities.Device", "Device")
+                        .WithMany("DeviceResultValueSampleUnitReferences")
+                        .HasForeignKey("DeviceId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Device");
+                });
+
+            modelBuilder.Entity("Labote.Core.Entities.DeviceResultValueType", b =>
+                {
+                    b.HasOne("Labote.Core.Entities.Device", "Device")
+                        .WithMany("DeviceResultValueType")
+                        .HasForeignKey("DeviceId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Device");
+                });
+
+            modelBuilder.Entity("Labote.Core.Entities.Laboratory", b =>
+                {
+                    b.HasOne("Labote.Core.Entities.UserTopic", "UserTopic")
+                        .WithMany("Laboratories")
+                        .HasForeignKey("UserTopicId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("UserTopic");
+                });
+
+            modelBuilder.Entity("Labote.Core.Entities.LaboratoryDevice", b =>
+                {
+                    b.HasOne("Labote.Core.Entities.Device", "Device")
+                        .WithMany("LaboratoryDevices")
+                        .HasForeignKey("DeviceId");
+
+                    b.HasOne("Labote.Core.Entities.Laboratory", "Laboratory")
+                        .WithMany("LaboratoryDevice")
+                        .HasForeignKey("LaboratoryId");
+
+                    b.Navigation("Device");
+
+                    b.Navigation("Laboratory");
+                });
+
             modelBuilder.Entity("Labote.Core.Entities.LaboratoryUser", b =>
                 {
                     b.HasOne("Labote.Core.Entities.Laboratory", "Laboratory")
@@ -424,6 +771,47 @@ namespace Labote.Core.Migrations
                     b.Navigation("UserTopic");
                 });
 
+            modelBuilder.Entity("Labote.Core.Entities.SampleExamination", b =>
+                {
+                    b.HasOne("Labote.Core.Entities.UserTopic", "UserTopic")
+                        .WithMany("SampleExaminations")
+                        .HasForeignKey("UserTopicId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("UserTopic");
+                });
+
+            modelBuilder.Entity("Labote.Core.Entities.SampleExaminationDevice", b =>
+                {
+                    b.HasOne("Labote.Core.Entities.Device", "Device")
+                        .WithMany("SampleExaminationDevices")
+                        .HasForeignKey("DeviceId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Labote.Core.Entities.SampleExamination", "SampleExamination")
+                        .WithMany("SampleExaminationDevices")
+                        .HasForeignKey("SampleExaminationId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Device");
+
+                    b.Navigation("SampleExamination");
+                });
+
+            modelBuilder.Entity("Labote.Core.Entities.SampleExaminationPriceCurrency", b =>
+                {
+                    b.HasOne("Labote.Core.Entities.SampleExamination", "SampleExamination")
+                        .WithMany("SampleExaminationPriceCurrencies")
+                        .HasForeignKey("SampleExaminationId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("SampleExamination");
+                });
+
             modelBuilder.Entity("Labote.Core.Entities.UserMenuModule", b =>
                 {
                     b.HasOne("Labote.Core.Entities.MenuModule", "MenuModel")
@@ -437,6 +825,13 @@ namespace Labote.Core.Migrations
                     b.Navigation("MenuModel");
 
                     b.Navigation("UserRole");
+                });
+
+            modelBuilder.Entity("Labote.Core.Entities.UserRole", b =>
+                {
+                    b.HasOne("Labote.Core.Entities.UserTopic", null)
+                        .WithMany("UserRoles")
+                        .HasForeignKey("UserTopicId");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
@@ -490,8 +885,21 @@ namespace Labote.Core.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("Labote.Core.Entities.Device", b =>
+                {
+                    b.Navigation("DeviceResultValueSampleUnitReferences");
+
+                    b.Navigation("DeviceResultValueType");
+
+                    b.Navigation("LaboratoryDevices");
+
+                    b.Navigation("SampleExaminationDevices");
+                });
+
             modelBuilder.Entity("Labote.Core.Entities.Laboratory", b =>
                 {
+                    b.Navigation("LaboratoryDevice");
+
                     b.Navigation("LaboratoryUsers");
                 });
 
@@ -505,6 +913,13 @@ namespace Labote.Core.Migrations
                     b.Navigation("UserMenuModules");
                 });
 
+            modelBuilder.Entity("Labote.Core.Entities.SampleExamination", b =>
+                {
+                    b.Navigation("SampleExaminationDevices");
+
+                    b.Navigation("SampleExaminationPriceCurrencies");
+                });
+
             modelBuilder.Entity("Labote.Core.Entities.UserRole", b =>
                 {
                     b.Navigation("UserMenuModules");
@@ -512,7 +927,15 @@ namespace Labote.Core.Migrations
 
             modelBuilder.Entity("Labote.Core.Entities.UserTopic", b =>
                 {
+                    b.Navigation("Devices");
+
+                    b.Navigation("Laboratories");
+
                     b.Navigation("LaboteUsers");
+
+                    b.Navigation("SampleExaminations");
+
+                    b.Navigation("UserRoles");
                 });
 #pragma warning restore 612, 618
         }
