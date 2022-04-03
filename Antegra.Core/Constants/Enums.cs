@@ -17,6 +17,57 @@ namespace Labote.Core.Constants
             VariantAttributes,
             BaseAttributes
         }
+        public enum SampleAcceptStatus
+        {
+            [Display(Description = "Müşteriden Kabul Edildi")]
+            AcceptFromCustomer = 1,
+            [Display(Description = "Laboratuvara Teslim Edildi")]
+            SubmitToLaboratory = 2,
+            [Display(Description = "Laboratuvardan Numune Kabule Teslim Edildi")]
+            SubmitToSampleAccept = 3,
+            [Display(Description = "Numune Müşteriye Gönderilmek İçin Bekliyor")]
+            WaitingForSendToCustomer = 4,
+            [Display(Description = "Numune Kargoya Verildi")]
+            Shipped = 4,
+            [Display(Description = "Numune Müşteriye Ulaştı")]
+            DeliveredToCustomer = 5,
+            [Display(Description = "Numune Kayıp/Eksik/Hatalı")]
+            ErrorSample = 6,
+            [Display(Description = "Numune Arşive Kaldırıldı")]
+            SendToArchive = 7,
+            [Display(Description = "Numune İmha Edildi")]
+            Destroyed = 8,
+        }
+        public enum SampleReturnType
+        {
+            [Display(Description = "Mişteriye İade Edilecek")]
+            WillBeRefundedToCustomer = 1,
+            [Display(Description = "Arşivlenecek")]
+            ToBeArchived = 2,
+            [Display(Description = "İmha Edilecek")]
+            ToBeDestroyed = 3,
+        }
+        public enum SampleAcceptPackaging
+        {
+            [Display(Description = "Orjinal Ambalaj")]
+            OriginalPackage = 1,
+
+            [Display(Description = "Numune Kabı")]
+            SampleBowl = 2,
+            [Display(Description = "Koli")]
+            Parcel = 3,
+            [Display(Description = "Diğer")]
+            Other = 4,
+        }
+        public enum SampleAcceptBringingType
+        {
+            [Display(Description = "Kargo")]
+            Cargo = 1,
+            [Display(Description = "Elden Teslim")]
+            HandDelivery = 1,
+
+        }
+
         public enum MarketPlaceKind
         {
             [Display(Name = "TY", Description = "Trendyol.com")]
@@ -36,19 +87,19 @@ namespace Labote.Core.Constants
         }
         public enum SampleExaminationCurrencyType
         {
-            [Display( Description = "TRY")]
+            [Display(Description = "TRY")]
             TRY = 1,
             [Display(Description = "USD")]
             USD = 2,
             [Display(Description = "EURO")]
             EURO = 3,
-            [Display( Description = "GBP")]
+            [Display(Description = "GBP")]
             GBP = 4,
-            [Display( Description = "RUB")]
+            [Display(Description = "RUB")]
             RUB = 5,
-            [Display(Name = "CNY", Description = "CNY")]
+            [Display(Description = "CNY")]
             CNY = 6,
-          
+
         }
 
         public enum JobScheduleTimeType
@@ -59,7 +110,7 @@ namespace Labote.Core.Constants
             Hour = 2,
             [Display(Description = "Gün")]
             Day = 3,
-        } 
+        }
         public enum MeasureUnitType
         {
             [Display(Description = "Yüzde")]
@@ -163,13 +214,22 @@ namespace Labote.Core.Constants
 
         public static string GetDisiplayDescription(this Enum enm)
         {
-          
+
             var das = enm;
             var enumType = enm.GetType().GetMember(enm.ToString());
-          return  enumType.FirstOrDefault().GetCustomAttribute<DisplayAttribute>().Description;
+            try
+            {
+                return enumType.FirstOrDefault().GetCustomAttribute<DisplayAttribute>()?.Description;
+            }
+            catch (Exception)
+            {
+
+                return "";
+            }
 
 
-            
+
+
         }
 
     }

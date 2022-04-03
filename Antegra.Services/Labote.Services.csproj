@@ -12,7 +12,9 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="BarcodeLib" Version="2.4.0" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Abstractions" Version="2.2.0" />
+    <PackageReference Include="System.Drawing.Common" Version="6.0.0" />
   </ItemGroup>
 
   <ItemGroup>

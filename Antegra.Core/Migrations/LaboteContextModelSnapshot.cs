@@ -19,6 +19,145 @@ namespace Labote.Core.Migrations
                 .HasAnnotation("ProductVersion", "5.0.12")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+            modelBuilder.Entity("Labote.Core.Entities.CurrentCustomer", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreateDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid?>("CreatorUserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsDelete")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("LogoImageName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("OfficialAgent")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("TaxAgency")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("TaxNumber")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Title")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("CurrentCustomers");
+                });
+
+            modelBuilder.Entity("Labote.Core.Entities.CurrentCustomerBankAccountInfo", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("BankMerchant")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("BankName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreateDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid?>("CreatorUserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("CurrentCustomerId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Iban")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsDelete")
+                        .HasColumnType("bit");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CurrentCustomerId");
+
+                    b.ToTable("CurrentCustomerBankAccountInfos");
+                });
+
+            modelBuilder.Entity("Labote.Core.Entities.CurrentCustomerContactInfo", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("City")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Country")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreateDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid?>("CreatorUserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("CurrentCustomerId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("FullAddress")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsDelete")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("MailAddress1")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("MailAddress2")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("MailAddress3")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Phone1")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Phone2")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Phone3")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("WebSite")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("neighborhood")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CurrentCustomerId");
+
+                    b.ToTable("CurrentCustomerContactInfos");
+                });
+
             modelBuilder.Entity("Labote.Core.Entities.Device", b =>
                 {
                     b.Property<Guid>("Id")
@@ -378,6 +517,89 @@ namespace Labote.Core.Migrations
                     b.ToTable("MenuModules");
                 });
 
+            modelBuilder.Entity("Labote.Core.Entities.SampleAccept", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("AcceptedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Barcode")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Brand")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid?>("ConfirmToGetLaboratoryUserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreateDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid?>("CreatorUserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("CurrentCustomerId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime?>("DeliveyToLaboratoeyDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("ExpirationDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsDelete")
+                        .HasColumnType("bit");
+
+                    b.Property<Guid>("LaboteUserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime?>("ManufactureDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Quantity")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("SampleAcceptBringingType")
+                        .HasColumnType("int");
+
+                    b.Property<int>("SampleAcceptPackaging")
+                        .HasColumnType("int");
+
+                    b.Property<int>("SampleAcceptStatus")
+                        .HasColumnType("int");
+
+                    b.Property<string>("SampleName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("SampleReturnType")
+                        .HasColumnType("int");
+
+                    b.Property<string>("SerialNo")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UnitType")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ConfirmToGetLaboratoryUserId");
+
+                    b.HasIndex("CurrentCustomerId");
+
+                    b.HasIndex("LaboteUserId");
+
+                    b.ToTable("SampleAccepts");
+                });
+
             modelBuilder.Entity("Labote.Core.Entities.SampleExamination", b =>
                 {
                     b.Property<Guid>("Id")
@@ -463,7 +685,7 @@ namespace Labote.Core.Migrations
                     b.Property<Guid?>("CreatorUserId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<int>("CurrenyType")
+                    b.Property<int>("CurrencyType")
                         .HasColumnType("int");
 
                     b.Property<bool>("IsActive")
@@ -483,6 +705,79 @@ namespace Labote.Core.Migrations
                     b.HasIndex("SampleExaminationId");
 
                     b.ToTable("SampleExaminationPriceCurrencies");
+                });
+
+            modelBuilder.Entity("Labote.Core.Entities.SampleExaminationResultValueType", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreateDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid?>("CreatorUserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsDelete")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("MeasureUnitSymbol")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("MeasureUnitType")
+                        .HasColumnType("int");
+
+                    b.Property<string>("MeasurementUnit")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("MeasurementUnitLongName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("SampleExaminationId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("SampleExaminationId");
+
+                    b.ToTable("SampleExaminationResultValueTypes");
+                });
+
+            modelBuilder.Entity("Labote.Core.Entities.SampleExaminationSampleAccept", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreateDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid?>("CreatorUserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsDelete")
+                        .HasColumnType("bit");
+
+                    b.Property<Guid>("SampleAcceptId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("SampleExaminationId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("SampleAcceptId");
+
+                    b.HasIndex("SampleExaminationId");
+
+                    b.ToTable("SampleExaminationSampleAccepts");
                 });
 
             modelBuilder.Entity("Labote.Core.Entities.UserMenuModule", b =>
@@ -687,6 +982,28 @@ namespace Labote.Core.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
+            modelBuilder.Entity("Labote.Core.Entities.CurrentCustomerBankAccountInfo", b =>
+                {
+                    b.HasOne("Labote.Core.Entities.CurrentCustomer", "CurrentCustomer")
+                        .WithMany("CurrentCustomerBankAccountInfos")
+                        .HasForeignKey("CurrentCustomerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("CurrentCustomer");
+                });
+
+            modelBuilder.Entity("Labote.Core.Entities.CurrentCustomerContactInfo", b =>
+                {
+                    b.HasOne("Labote.Core.Entities.CurrentCustomer", "CurrentCustomer")
+                        .WithMany("CurrentCustomerContactInfos")
+                        .HasForeignKey("CurrentCustomerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("CurrentCustomer");
+                });
+
             modelBuilder.Entity("Labote.Core.Entities.Device", b =>
                 {
                     b.HasOne("Labote.Core.Entities.UserTopic", "UserTopic")
@@ -772,6 +1089,32 @@ namespace Labote.Core.Migrations
                     b.Navigation("UserTopic");
                 });
 
+            modelBuilder.Entity("Labote.Core.Entities.SampleAccept", b =>
+                {
+                    b.HasOne("Labote.Core.Entities.LaboteUser", "ConfirmToGetLaboratoryUser")
+                        .WithMany("SampleAcceptForConfirms")
+                        .HasForeignKey("ConfirmToGetLaboratoryUserId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("Labote.Core.Entities.CurrentCustomer", "CurrentCustomer")
+                        .WithMany("SampleAccepts")
+                        .HasForeignKey("CurrentCustomerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Labote.Core.Entities.LaboteUser", "LaboteUser")
+                        .WithMany("SampleAccepts")
+                        .HasForeignKey("LaboteUserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("ConfirmToGetLaboratoryUser");
+
+                    b.Navigation("CurrentCustomer");
+
+                    b.Navigation("LaboteUser");
+                });
+
             modelBuilder.Entity("Labote.Core.Entities.SampleExamination", b =>
                 {
                     b.HasOne("Labote.Core.Entities.UserTopic", "UserTopic")
@@ -809,6 +1152,36 @@ namespace Labote.Core.Migrations
                         .HasForeignKey("SampleExaminationId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("SampleExamination");
+                });
+
+            modelBuilder.Entity("Labote.Core.Entities.SampleExaminationResultValueType", b =>
+                {
+                    b.HasOne("Labote.Core.Entities.SampleExamination", "SampleExamination")
+                        .WithMany("SampleExaminationResultValueTypes")
+                        .HasForeignKey("SampleExaminationId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("SampleExamination");
+                });
+
+            modelBuilder.Entity("Labote.Core.Entities.SampleExaminationSampleAccept", b =>
+                {
+                    b.HasOne("Labote.Core.Entities.SampleAccept", "SampleAccept")
+                        .WithMany("SampleExaminationSampleAccepts")
+                        .HasForeignKey("SampleAcceptId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Labote.Core.Entities.SampleExamination", "SampleExamination")
+                        .WithMany("SampleExaminationSampleAccepts")
+                        .HasForeignKey("SampleExaminationId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("SampleAccept");
 
                     b.Navigation("SampleExamination");
                 });
@@ -886,6 +1259,15 @@ namespace Labote.Core.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("Labote.Core.Entities.CurrentCustomer", b =>
+                {
+                    b.Navigation("CurrentCustomerBankAccountInfos");
+
+                    b.Navigation("CurrentCustomerContactInfos");
+
+                    b.Navigation("SampleAccepts");
+                });
+
             modelBuilder.Entity("Labote.Core.Entities.Device", b =>
                 {
                     b.Navigation("DeviceResultValueSampleUnitReferences");
@@ -907,6 +1289,10 @@ namespace Labote.Core.Migrations
             modelBuilder.Entity("Labote.Core.Entities.LaboteUser", b =>
                 {
                     b.Navigation("LaboratoryUsers");
+
+                    b.Navigation("SampleAcceptForConfirms");
+
+                    b.Navigation("SampleAccepts");
                 });
 
             modelBuilder.Entity("Labote.Core.Entities.MenuModule", b =>
@@ -914,11 +1300,20 @@ namespace Labote.Core.Migrations
                     b.Navigation("UserMenuModules");
                 });
 
+            modelBuilder.Entity("Labote.Core.Entities.SampleAccept", b =>
+                {
+                    b.Navigation("SampleExaminationSampleAccepts");
+                });
+
             modelBuilder.Entity("Labote.Core.Entities.SampleExamination", b =>
                 {
                     b.Navigation("SampleExaminationDevices");
 
                     b.Navigation("SampleExaminationPriceCurrencies");
+
+                    b.Navigation("SampleExaminationResultValueTypes");
+
+                    b.Navigation("SampleExaminationSampleAccepts");
                 });
 
             modelBuilder.Entity("Labote.Core.Entities.UserRole", b =>

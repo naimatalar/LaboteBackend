@@ -11,7 +11,7 @@ namespace Labote.Core.Entities
         public SampleExamination SampleExamination { get; set; }
         public Guid SampleExaminationId { get; set; }
         public int Price { get; set; }
-        public Constants.Enums.SampleExaminationCurrencyType CurrenyType { get; set; }
+        public Constants.Enums.SampleExaminationCurrencyType CurrencyType { get; set; }
    
     }
 }

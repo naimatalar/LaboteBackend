@@ -12,16 +12,16 @@ namespace Labote.Core
 {
     public class LaboteContext : IdentityDbContext<LaboteUser, UserRole, Guid>
     {
-       
+
         public IConfiguration Configuration { get; }
 
- 
+
 
         public LaboteContext()
         {
-           
+
         }
-  
+
         public LaboteContext(DbContextOptions<LaboteContext> options) : base(options)
         {
 
@@ -41,7 +41,13 @@ namespace Labote.Core
 
         public DbSet<SampleExamination> SampleExaminations { get; set; }
         public DbSet<SampleExaminationDevice> SampleExaminationDevice { get; set; }
-             public DbSet<SampleExaminationPriceCurrency> SampleExaminationPriceCurrencies { get; set; }
+        public DbSet<SampleExaminationPriceCurrency> SampleExaminationPriceCurrencies { get; set; }
+        public DbSet<SampleExaminationResultValueType> SampleExaminationResultValueTypes { get; set; }
+        public DbSet<CurrentCustomer> CurrentCustomers { get; set; }
+        public DbSet<CurrentCustomerBankAccountInfo> CurrentCustomerBankAccountInfos { get; set; }
+        public DbSet<CurrentCustomerContactInfo> CurrentCustomerContactInfos { get; set; }
+        public DbSet<SampleAccept> SampleAccepts { get; set; }
+        public DbSet<SampleExaminationSampleAccept> SampleExaminationSampleAccepts { get; set; }
 
 
 
@@ -53,7 +59,7 @@ namespace Labote.Core
 
                 string json = File.ReadAllText("appsettings.json");
                 dynamic jsonObj = Newtonsoft.Json.JsonConvert.DeserializeObject(json);
-                string connectionString = jsonObj.ConnectionStrings.LaboteConnection.ToString() ;
+                string connectionString = jsonObj.ConnectionStrings.LaboteConnection.ToString();
                 optionsBuilder.UseSqlServer(connectionString);
             }
         }
@@ -65,7 +71,13 @@ namespace Labote.Core
        .HasOne(p => p.UserTopic)
        .WithMany(b => b.SampleExaminations).OnDelete(DeleteBehavior.Restrict);
 
+            builder.Entity<SampleAccept>()
+       .HasOne(p => p.ConfirmToGetLaboratoryUser)
+       .WithMany(b => b.SampleAcceptForConfirms).OnDelete(DeleteBehavior.Restrict);
 
+            builder.Entity<SampleAccept>()
+       .HasOne(p => p.LaboteUser)
+       .WithMany(b => b.SampleAccepts).OnDelete(DeleteBehavior.Restrict);
         }
 
         public override bool Equals(object obj)

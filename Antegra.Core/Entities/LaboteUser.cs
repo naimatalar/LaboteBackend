@@ -19,6 +19,8 @@ namespace Labote.Core.Entities
         public bool IsDelete { get; set; }
         public bool NotDelete { get; set; }
        
+        public virtual ICollection<SampleAccept> SampleAccepts { get; set; }
+        public virtual ICollection<SampleAccept> SampleAcceptForConfirms { get; set; }
 
         public virtual ICollection<LaboratoryUser> LaboratoryUsers { get; set; }
 

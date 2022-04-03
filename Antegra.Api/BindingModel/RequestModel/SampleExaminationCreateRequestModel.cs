@@ -12,7 +12,7 @@ namespace Labote.Api.BindingModel.RequestModel
         public string Description { get; set; }
         public string Unit { get; set; }
         public string SampleMethod { get; set; }
-        public  List<Guid> SampleExaminationDevices { get; set; }
-        public List<SampleExaminationPriceCurrencyCreateModel> SampleExaminationPriceCurrencies { get; set; }
+        public List<Guid> SampleExaminationDevices { get; set; } = new List<Guid>();
+        public List<SampleExaminationPriceCurrencyCreateModel> SampleExaminationPriceCurrencies { get; set; }= new List<SampleExaminationPriceCurrencyCreateModel>();
     }
 }

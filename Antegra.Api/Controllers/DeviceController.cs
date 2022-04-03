@@ -259,10 +259,8 @@ namespace Labote.Api.Controllers
                 x.MeasureUnitType,
                 MeasureUnitTypeName = x.MeasureUnitType.GetDisiplayDescription(),
                 x.MeasureUnitSymbol,
-     
 
             });
-
 
             PageResponse.Data = data;
             return PageResponse;

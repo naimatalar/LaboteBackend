@@ -263,7 +263,6 @@ C:\Users\CORNELIUS\Desktop\LaboratuarSistem\Antegra.Api\bin\Debug\net5.0\refs\Sy
 C:\Users\CORNELIUS\Desktop\LaboratuarSistem\Antegra.Api\bin\Debug\net5.0\refs\System.Text.Encoding.dll
 C:\Users\CORNELIUS\Desktop\LaboratuarSistem\Antegra.Api\bin\Debug\net5.0\refs\System.Text.Encoding.Extensions.dll
 C:\Users\CORNELIUS\Desktop\LaboratuarSistem\Antegra.Api\bin\Debug\net5.0\refs\System.Text.Encodings.Web.dll
-C:\Users\CORNELIUS\Desktop\LaboratuarSistem\Antegra.Api\bin\Debug\net5.0\refs\System.Text.Json.dll
 C:\Users\CORNELIUS\Desktop\LaboratuarSistem\Antegra.Api\bin\Debug\net5.0\refs\System.Text.RegularExpressions.dll
 C:\Users\CORNELIUS\Desktop\LaboratuarSistem\Antegra.Api\bin\Debug\net5.0\refs\System.Threading.Channels.dll
 C:\Users\CORNELIUS\Desktop\LaboratuarSistem\Antegra.Api\bin\Debug\net5.0\refs\System.Threading.dll
@@ -404,3 +403,10 @@ C:\Users\CORNELIUS\Desktop\LaboratuarSistem\Antegra.Api\bin\Debug\net5.0\Labote.
 C:\Users\CORNELIUS\Desktop\LaboratuarSistem\Antegra.Api\bin\Debug\net5.0\Labote.Services.pdb
 C:\Users\CORNELIUS\Desktop\LaboratuarSistem\Antegra.Api\obj\Debug\net5.0\Labote.Api.csproj.CopyComplete
 C:\Users\CORNELIUS\Desktop\LaboratuarSistem\Antegra.Api\obj\Debug\net5.0\Labote.Api.genruntimeconfig.cache
+C:\Users\CORNELIUS\Desktop\LaboratuarSistem\Antegra.Api\bin\Debug\net5.0\Microsoft.Win32.SystemEvents.dll
+C:\Users\CORNELIUS\Desktop\LaboratuarSistem\Antegra.Api\bin\Debug\net5.0\System.Drawing.Common.dll
+C:\Users\CORNELIUS\Desktop\LaboratuarSistem\Antegra.Api\bin\Debug\net5.0\runtimes\win\lib\netcoreapp3.1\Microsoft.Win32.SystemEvents.dll
+C:\Users\CORNELIUS\Desktop\LaboratuarSistem\Antegra.Api\bin\Debug\net5.0\runtimes\unix\lib\netcoreapp3.1\System.Drawing.Common.dll
+C:\Users\CORNELIUS\Desktop\LaboratuarSistem\Antegra.Api\bin\Debug\net5.0\runtimes\win\lib\netcoreapp3.1\System.Drawing.Common.dll
+C:\Users\CORNELIUS\Desktop\LaboratuarSistem\Antegra.Api\bin\Debug\net5.0\BarcodeStandard.dll
+C:\Users\CORNELIUS\Desktop\LaboratuarSistem\Antegra.Api\bin\Debug\net5.0\System.Text.Json.dll

@@ -317,12 +317,12 @@ namespace Labote.Core
             {
                 using (var transaction = context.Database.BeginTransaction())
                 {
-                    if (!MenuList.Any(x => x.PageName == "Tetkik Tanımlama"))
+                    if (!MenuList.Any(x => x.PageName == "Analiz Tanımlama"))
                     {
                         context.Add(new MenuModule
                         {
-                            PageName = "Tetkik Tanımlama",
-                            PageUrl = "tetkik-tanimlama",
+                            PageName = "Analiz Tanımlama",
+                            PageUrl = "analiz-tanimlama",
                             ParentId = Sistem.Id,
                             OrderNumber = 3
                         });
@@ -334,7 +334,158 @@ namespace Labote.Core
 
             #endregion
 
+            #region Laboratuvar
+            var Laboratuvar = new MenuModule
+            {
+                IconName = "fa fa-flask ",
+                PageName = "Laboratuvar",
+                OrderNumber = 1,
+                IsMainPage = true,
+                PageUrl = "laboratuvar"
+            };
 
+            using (LaboteContext context = new LaboteContext())
+            {
+                using (var transaction = context.Database.BeginTransaction())
+                {
+                    var Ky = MenuList.FirstOrDefault(x => x.PageName == Laboratuvar.PageName);
+                    if (Ky == null)
+                    {
+                        context.Add(Laboratuvar);
+                        context.SaveChanges();
+                    }
+                    else { Laboratuvar = Ky; }
+                    transaction.Commit();
+                }
+            }
+            using (LaboteContext context = new LaboteContext())
+            {
+                using (var transaction = context.Database.BeginTransaction())
+                {
+
+                    if (!MenuList.Any(x => x.PageName == "Numune Kabul"))
+                    {
+                        context.Add(new MenuModule
+                        {
+                            PageName = "Numune Kabul",
+                            PageUrl = "numune-kabul",
+                            ParentId = Laboratuvar.Id,
+                            OrderNumber = 1
+                        });
+                    }
+                    context.SaveChanges();
+                    transaction.Commit();
+                }
+            }
+
+            using (LaboteContext context = new LaboteContext())
+            {
+                using (var transaction = context.Database.BeginTransaction())
+                {
+
+                    if (!MenuList.Any(x => x.PageName == "Analiz Kayıtları"))
+                    {
+                        context.Add(new MenuModule
+                        {
+                            PageName = "Analiz Kayıtları",
+                            PageUrl = "analiz-kayitlari",
+                            ParentId = Laboratuvar.Id,
+                            OrderNumber = 3
+                        });
+                    }
+                    context.SaveChanges();
+                    transaction.Commit();
+                }
+            }
+
+            using (LaboteContext context = new LaboteContext())
+            {
+                using (var transaction = context.Database.BeginTransaction())
+                {
+                    if (!MenuList.Any(x => x.PageName == "Analiz Oluşturma"))
+                    {
+                        context.Add(new MenuModule
+                        {
+                            PageName = "Analiz Oluşturma",
+                            PageUrl = "analiz-olusturma",
+                            ParentId = Laboratuvar.Id,
+                            OrderNumber = 2
+                        });
+                    }
+                    context.SaveChanges();
+                    transaction.Commit();
+                }
+            }
+
+            #endregion
+
+            #region Muhasebe
+            var Muhasebe = new MenuModule
+            {
+                IconName = "fa fa-address-book",
+                PageName = "Muhasebe",
+                OrderNumber = 1,
+                IsMainPage = true,
+                PageUrl = "muhasebe"
+            };
+
+            using (LaboteContext context = new LaboteContext())
+            {
+                using (var transaction = context.Database.BeginTransaction())
+                {
+                    var Ky = MenuList.FirstOrDefault(x => x.PageName == Muhasebe.PageName);
+                    if (Ky == null)
+                    {
+                        context.Add(Muhasebe);
+                        context.SaveChanges();
+                    }
+                    else { Muhasebe = Ky; }
+                    transaction.Commit();
+                }
+            }
+            using (LaboteContext context = new LaboteContext())
+            {
+                using (var transaction = context.Database.BeginTransaction())
+                {
+
+                    if (!MenuList.Any(x => x.PageName == "Cari Hesaplar"))
+                    {
+                        context.Add(new MenuModule
+                        {
+                            PageName = "Cari Hesaplar",
+                            PageUrl = "cari-hesaplar",
+                            ParentId = Muhasebe.Id,
+                            OrderNumber = 1
+                        });
+                    }
+                    context.SaveChanges();
+                    transaction.Commit();
+                }
+            }
+
+            using (LaboteContext context = new LaboteContext())
+            {
+                using (var transaction = context.Database.BeginTransaction())
+                {
+
+                    if (!MenuList.Any(x => x.PageName == "Faturalar"))
+                    {
+                        context.Add(new MenuModule
+                        {
+                            PageName = "Faturalar",
+                            PageUrl = "faturalar",
+                            ParentId = Muhasebe.Id,
+                            OrderNumber = 2
+                        });
+                    }
+                    context.SaveChanges();
+                    transaction.Commit();
+                }
+            }
+
+
+
+            #endregion
 
             using (LaboteContext context = new LaboteContext())
             {
