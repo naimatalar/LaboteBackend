@@ -38,6 +38,15 @@ namespace Labote.Core.Constants
             [Display(Description = "Numune İmha Edildi")]
             Destroyed = 8,
         }
+        public enum AnalisysStatus
+        {
+            [Display(Description = "Başladı")]
+            WillBeRefundedToCustomer = 1,
+            [Display(Description = "Bitirildi")]
+            ToBeArchived = 2,
+       
+        }
+
         public enum SampleReturnType
         {
             [Display(Description = "Mişteriye İade Edilecek")]

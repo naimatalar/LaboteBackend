@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Labote.Core.Migrations
 {
     [DbContext(typeof(LaboteContext))]
-    [Migration("20220402103213_sampleacceptRev")]
-    partial class sampleacceptRev
+    [Migration("20220405214009_fdfdgdffdh")]
+    partial class fdfdgdffdh
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -20,6 +20,184 @@ namespace Labote.Core.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("ProductVersion", "5.0.12")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+            modelBuilder.Entity("Labote.Core.Entities.AnalisysCreateRecord", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("AnalysisStartDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("CreateDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid?>("CreatorUserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsDelete")
+                        .HasColumnType("bit");
+
+                    b.Property<Guid>("LaboteUserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("SampleAcceptId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("LaboteUserId");
+
+                    b.HasIndex("SampleAcceptId");
+
+                    b.ToTable("AnalisysCreateRecords");
+                });
+
+            modelBuilder.Entity("Labote.Core.Entities.AnalisysRecord", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("AnalisysCreateRecordId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreateDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid?>("CreatorUserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsDelete")
+                        .HasColumnType("bit");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AnalisysCreateRecordId");
+
+                    b.ToTable("AnalisysRecords");
+                });
+
+            modelBuilder.Entity("Labote.Core.Entities.AnalisysRecordDeviceValue", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("AnalisysRecordId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreateDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid?>("CreatorUserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("DeviceResultValueTypeId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsDelete")
+                        .HasColumnType("bit");
+
+                    b.Property<Guid?>("SampleExaminationId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Value")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AnalisysRecordId");
+
+                    b.HasIndex("DeviceResultValueTypeId");
+
+                    b.HasIndex("SampleExaminationId");
+
+                    b.ToTable("AnalisysRecordDeviceValues");
+                });
+
+            modelBuilder.Entity("Labote.Core.Entities.AnalisysRecordSampleExaminationResultValue", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("AnalisysRecordId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreateDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid?>("CreatorUserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsDelete")
+                        .HasColumnType("bit");
+
+                    b.Property<Guid>("SampleExaminationResultValueTypeId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Value")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AnalisysRecordId");
+
+                    b.HasIndex("SampleExaminationResultValueTypeId");
+
+                    b.ToTable("AnalisysRecordSampleExaminationResultValues");
+                });
+
+            modelBuilder.Entity("Labote.Core.Entities.Chemical", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreateDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid?>("CreatorUserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsDelete")
+                        .HasColumnType("bit");
+
+                    b.Property<Guid>("LaboratoryId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Unit")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("LaboratoryId");
+
+                    b.ToTable("Chemical");
+                });
 
             modelBuilder.Entity("Labote.Core.Entities.CurrentCustomer", b =>
                 {
@@ -534,6 +712,9 @@ namespace Labote.Core.Migrations
                     b.Property<string>("Brand")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<Guid?>("ConfirmToGetLaboratoryUserId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<DateTime>("CreateDate")
                         .HasColumnType("datetime2");
 
@@ -543,6 +724,12 @@ namespace Labote.Core.Migrations
                     b.Property<Guid>("CurrentCustomerId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<DateTime?>("DeliveyToLaboratoeyDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<DateTime?>("ExpirationDate")
                         .HasColumnType("datetime2");
 
@@ -551,6 +738,9 @@ namespace Labote.Core.Migrations
 
                     b.Property<bool>("IsDelete")
                         .HasColumnType("bit");
+
+                    b.Property<Guid>("LaboratoryId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("LaboteUserId")
                         .HasColumnType("uniqueidentifier");
@@ -584,7 +774,11 @@ namespace Labote.Core.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("ConfirmToGetLaboratoryUserId");
+
                     b.HasIndex("CurrentCustomerId");
+
+                    b.HasIndex("LaboratoryId");
 
                     b.HasIndex("LaboteUserId");
 
@@ -768,7 +962,7 @@ namespace Labote.Core.Migrations
 
                     b.HasIndex("SampleExaminationId");
 
-                    b.ToTable("SampleExaminationSampleAccept");
+                    b.ToTable("SampleExaminationSampleAccepts");
                 });
 
             modelBuilder.Entity("Labote.Core.Entities.UserMenuModule", b =>
@@ -973,6 +1167,89 @@ namespace Labote.Core.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
+            modelBuilder.Entity("Labote.Core.Entities.AnalisysCreateRecord", b =>
+                {
+                    b.HasOne("Labote.Core.Entities.LaboteUser", "LaboteUser")
+                        .WithMany("AnalisysRecords")
+                        .HasForeignKey("LaboteUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Labote.Core.Entities.SampleAccept", "SampleAccept")
+                        .WithMany("AnalisysCreateRecords")
+                        .HasForeignKey("SampleAcceptId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("LaboteUser");
+
+                    b.Navigation("SampleAccept");
+                });
+
+            modelBuilder.Entity("Labote.Core.Entities.AnalisysRecord", b =>
+                {
+                    b.HasOne("Labote.Core.Entities.AnalisysCreateRecord", "AnalisysCreateRecord")
+                        .WithMany("AnalisysRecords")
+                        .HasForeignKey("AnalisysCreateRecordId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("AnalisysCreateRecord");
+                });
+
+            modelBuilder.Entity("Labote.Core.Entities.AnalisysRecordDeviceValue", b =>
+                {
+                    b.HasOne("Labote.Core.Entities.AnalisysRecord", "AnalisysRecord")
+                        .WithMany("AnalisysRecordDeviceValues")
+                        .HasForeignKey("AnalisysRecordId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Labote.Core.Entities.DeviceResultValueType", "DeviceResultValueType")
+                        .WithMany("AnalisysRecordDeviceValues")
+                        .HasForeignKey("DeviceResultValueTypeId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("Labote.Core.Entities.SampleExamination", null)
+                        .WithMany("AnalisysRecordDeviceValues")
+                        .HasForeignKey("SampleExaminationId");
+
+                    b.Navigation("AnalisysRecord");
+
+                    b.Navigation("DeviceResultValueType");
+                });
+
+            modelBuilder.Entity("Labote.Core.Entities.AnalisysRecordSampleExaminationResultValue", b =>
+                {
+                    b.HasOne("Labote.Core.Entities.AnalisysRecord", "AnalisysRecord")
+                        .WithMany("AnalisysRecordSampleExaminationResultValues")
+                        .HasForeignKey("AnalisysRecordId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Labote.Core.Entities.SampleExaminationResultValueType", "SampleExaminationResultValueType")
+                        .WithMany("AnalisysRecordSampleExaminationResultValues")
+                        .HasForeignKey("SampleExaminationResultValueTypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("AnalisysRecord");
+
+                    b.Navigation("SampleExaminationResultValueType");
+                });
+
+            modelBuilder.Entity("Labote.Core.Entities.Chemical", b =>
+                {
+                    b.HasOne("Labote.Core.Entities.Laboratory", "Laboratory")
+                        .WithMany("Chemicals")
+                        .HasForeignKey("LaboratoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Laboratory");
+                });
+
             modelBuilder.Entity("Labote.Core.Entities.CurrentCustomerBankAccountInfo", b =>
                 {
                     b.HasOne("Labote.Core.Entities.CurrentCustomer", "CurrentCustomer")
@@ -1082,19 +1359,34 @@ namespace Labote.Core.Migrations
 
             modelBuilder.Entity("Labote.Core.Entities.SampleAccept", b =>
                 {
+                    b.HasOne("Labote.Core.Entities.LaboteUser", "ConfirmToGetLaboratoryUser")
+                        .WithMany("SampleAcceptForConfirms")
+                        .HasForeignKey("ConfirmToGetLaboratoryUserId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
                     b.HasOne("Labote.Core.Entities.CurrentCustomer", "CurrentCustomer")
                         .WithMany("SampleAccepts")
                         .HasForeignKey("CurrentCustomerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("Labote.Core.Entities.Laboratory", "Laboratory")
+                        .WithMany("SampleAccepts")
+                        .HasForeignKey("LaboratoryId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
                     b.HasOne("Labote.Core.Entities.LaboteUser", "LaboteUser")
                         .WithMany("SampleAccepts")
                         .HasForeignKey("LaboteUserId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
+                    b.Navigation("ConfirmToGetLaboratoryUser");
+
                     b.Navigation("CurrentCustomer");
+
+                    b.Navigation("Laboratory");
 
                     b.Navigation("LaboteUser");
                 });
@@ -1143,7 +1435,7 @@ namespace Labote.Core.Migrations
             modelBuilder.Entity("Labote.Core.Entities.SampleExaminationResultValueType", b =>
                 {
                     b.HasOne("Labote.Core.Entities.SampleExamination", "SampleExamination")
-                        .WithMany("SampleExaminationResultValueTypes")
+                        .WithMany()
                         .HasForeignKey("SampleExaminationId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -1243,6 +1535,18 @@ namespace Labote.Core.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("Labote.Core.Entities.AnalisysCreateRecord", b =>
+                {
+                    b.Navigation("AnalisysRecords");
+                });
+
+            modelBuilder.Entity("Labote.Core.Entities.AnalisysRecord", b =>
+                {
+                    b.Navigation("AnalisysRecordDeviceValues");
+
+                    b.Navigation("AnalisysRecordSampleExaminationResultValues");
+                });
+
             modelBuilder.Entity("Labote.Core.Entities.CurrentCustomer", b =>
                 {
                     b.Navigation("CurrentCustomerBankAccountInfos");
@@ -1263,16 +1567,29 @@ namespace Labote.Core.Migrations
                     b.Navigation("SampleExaminationDevices");
                 });
 
+            modelBuilder.Entity("Labote.Core.Entities.DeviceResultValueType", b =>
+                {
+                    b.Navigation("AnalisysRecordDeviceValues");
+                });
+
             modelBuilder.Entity("Labote.Core.Entities.Laboratory", b =>
                 {
+                    b.Navigation("Chemicals");
+
                     b.Navigation("LaboratoryDevice");
 
                     b.Navigation("LaboratoryUsers");
+
+                    b.Navigation("SampleAccepts");
                 });
 
             modelBuilder.Entity("Labote.Core.Entities.LaboteUser", b =>
                 {
+                    b.Navigation("AnalisysRecords");
+
                     b.Navigation("LaboratoryUsers");
+
+                    b.Navigation("SampleAcceptForConfirms");
 
                     b.Navigation("SampleAccepts");
                 });
@@ -1284,18 +1601,25 @@ namespace Labote.Core.Migrations
 
             modelBuilder.Entity("Labote.Core.Entities.SampleAccept", b =>
                 {
+                    b.Navigation("AnalisysCreateRecords");
+
                     b.Navigation("SampleExaminationSampleAccepts");
                 });
 
             modelBuilder.Entity("Labote.Core.Entities.SampleExamination", b =>
                 {
+                    b.Navigation("AnalisysRecordDeviceValues");
+
                     b.Navigation("SampleExaminationDevices");
 
                     b.Navigation("SampleExaminationPriceCurrencies");
 
-                    b.Navigation("SampleExaminationResultValueTypes");
-
                     b.Navigation("SampleExaminationSampleAccepts");
+                });
+
+            modelBuilder.Entity("Labote.Core.Entities.SampleExaminationResultValueType", b =>
+                {
+                    b.Navigation("AnalisysRecordSampleExaminationResultValues");
                 });
 
             modelBuilder.Entity("Labote.Core.Entities.UserRole", b =>

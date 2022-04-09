@@ -48,6 +48,10 @@ namespace Labote.Core
         public DbSet<CurrentCustomerContactInfo> CurrentCustomerContactInfos { get; set; }
         public DbSet<SampleAccept> SampleAccepts { get; set; }
         public DbSet<SampleExaminationSampleAccept> SampleExaminationSampleAccepts { get; set; }
+        public DbSet<AnalisysCreateRecord> AnalisysCreateRecords { get; set; }
+        public DbSet<AnalisysRecord> AnalisysRecords { get; set; }
+        public DbSet<AnalisysRecordDeviceValue> AnalisysRecordDeviceValues { get; set; }
+        public DbSet<AnalisysRecordSampleExaminationResultValue> AnalisysRecordSampleExaminationResultValues { get; set; }
 
 
 
@@ -78,7 +82,20 @@ namespace Labote.Core
             builder.Entity<SampleAccept>()
        .HasOne(p => p.LaboteUser)
        .WithMany(b => b.SampleAccepts).OnDelete(DeleteBehavior.Restrict);
+
+                    builder.Entity<Laboratory>()
+         .HasMany(p => p.SampleAccepts)
+          .WithOne(b => b.Laboratory).OnDelete(DeleteBehavior.Restrict);
+                builder.Entity<AnalisysRecordDeviceValue>()
+         .HasOne(p => p.DeviceResultValueType)
+          .WithMany(b => b.AnalisysRecordDeviceValues).OnDelete(DeleteBehavior.Restrict);
+  
         }
+
+
+
+
+
 
         public override bool Equals(object obj)
         {

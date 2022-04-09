@@ -24,10 +24,41 @@ namespace Labote.Api.Controllers
             _context = context;
         }
 
+        [HttpPost("GetAllSampleAcceptByLaboratoryId")]
+        public async Task<dynamic> GetAllSampleAcceptByLaboratoryId(BasePaginationRequestModel model)
+        {
+            var currentCustomers = _context.Laboratories.Where(x => x.IsActive && x.Id==model.LaboratoryId).SelectMany(x=>x.SampleAccepts).Select(x => new
+            {
+                x.Id,
+                x.Brand,
+                x.AcceptedDate,
+                ViewAcceptedDate = x.AcceptedDate.ToString("dd/MM/yyyy HH:mm"),
+                x.Barcode,
+                LaboteUser = x.LaboteUser.FirstName + " " + x.LaboteUser.Lastname,
+                x.ManufactureDate,
+                ViewManufactureDate = x.ManufactureDate.Value.ToString("dd/MM/yyyy HH:mm"),
+                x.Quantity,
+                SampleAcceptBringingType = x.SampleAcceptBringingType.GetDisiplayDescription(),
+                SampleAcceptPackaging = x.SampleAcceptPackaging.GetDisiplayDescription(),
+                SampleAcceptStatus = x.SampleAcceptStatus.GetDisiplayDescription(),
+                x.SampleName,
+                SampleReturnType = x.SampleReturnType.GetDisiplayDescription(),
+                x.SerialNo,
+                x.UnitType,
+                x.Laboratory.Name,
+                x.CreateDate,
+                ViewCreateDate = x.CreateDate.ToString("dd/MM/yyyy HH:mm"),
+                CurrentCustomer = x.CurrentCustomer.Name + " " + x.CurrentCustomer.Title,
+                BarcodeImageString = Barcode.Generate(x.Barcode)
+            });
+
+            PageResponse.Data = new { List = currentCustomers.Skip((model.PageNumber - 1) * (model.PageSize - 1)).Take(model.PageSize).ToList(), TotalCount = (currentCustomers.Count() / model.PageSize) + 1, PageNumber = model.PageNumber };
+            return Ok(PageResponse);
+        }
+
         [HttpPost("GetAllSampleAccept")]
         public async Task<dynamic> GetAllSampleAccept(BasePaginationRequestModel model)
-        {
-            
+        {          
             var currentCustomers = _context.SampleAccepts.Where(x => x.IsActive).Select(x => new
             {
                 x.Id,
@@ -46,6 +77,7 @@ namespace Labote.Api.Controllers
                 SampleReturnType = x.SampleReturnType.GetDisiplayDescription(),
                 x.SerialNo,
                 x.UnitType,
+                x.Laboratory.Name,
                 x.CreateDate,
                 ViewCreateDate = x.CreateDate.ToString("dd/MM/yyyy HH:mm"),
                 CurrentCustomer = x.CurrentCustomer.Name + " " + x.CurrentCustomer.Title,
@@ -122,7 +154,7 @@ namespace Labote.Api.Controllers
                             SerialNo = model.SerialNo,
                             UnitType = model.UnitType,
                             Description = model.Description,
-                            
+                            LaboratoryId=model.LaboratoryId
 
                         };
                         context.SampleAccepts.Add(masterData);

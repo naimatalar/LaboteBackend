@@ -9,5 +9,6 @@ namespace Labote.Api.BindingModel.RequestModel
     {
         public int PageNumber { get; set; }
         public int PageSize { get; set; }
+        public Guid LaboratoryId { get; set; }
     }
 }

@@ -21,6 +21,7 @@ namespace Labote.Core.Entities
        
         public virtual ICollection<SampleAccept> SampleAccepts { get; set; }
         public virtual ICollection<SampleAccept> SampleAcceptForConfirms { get; set; }
+        public virtual ICollection<AnalisysCreateRecord> AnalisysRecords { get; set; }
 
         public virtual ICollection<LaboratoryUser> LaboratoryUsers { get; set; }
 

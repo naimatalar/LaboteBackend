@@ -14,5 +14,6 @@ namespace Labote.Core.Entities
         public string MeasurementUnitLongName { get; set; }
         public Constants.Enums.MeasureUnitType MeasureUnitType { get; set; }
         public string MeasureUnitSymbol { get; set; }
+        public virtual ICollection<AnalisysRecordSampleExaminationResultValue> AnalisysRecordSampleExaminationResultValues { get; set; }
     }
 }

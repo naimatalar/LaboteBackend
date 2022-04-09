@@ -331,6 +331,24 @@ namespace Labote.Core
                     transaction.Commit();
                 }
             }
+            using (LaboteContext context = new LaboteContext())
+            {
+                using (var transaction = context.Database.BeginTransaction())
+                {
+                    if (!MenuList.Any(x => x.PageName == "Kimyasal Tanımlama"))
+                    {
+                        context.Add(new MenuModule
+                        {
+                            PageName = "Kimyasal Tanımlama",
+                            PageUrl = "kimyasal-tanimlama",
+                            ParentId = Sistem.Id,
+                            OrderNumber = 4
+                        });
+                    }
+                    context.SaveChanges();
+                    transaction.Commit();
+                }
+            }
 
             #endregion
 
@@ -397,26 +415,28 @@ namespace Labote.Core
                     transaction.Commit();
                 }
             }
-
+            var AnalisysCreateModel = new MenuModule
+            {
+                PageName = "Analiz Oluşturma",
+                PageUrl = "analiz-olusturma",
+                ParentId = Laboratuvar.Id,
+                OrderNumber = 2
+            };
             using (LaboteContext context = new LaboteContext())
             {
                 using (var transaction = context.Database.BeginTransaction())
                 {
+
                     if (!MenuList.Any(x => x.PageName == "Analiz Oluşturma"))
                     {
-                        context.Add(new MenuModule
-                        {
-                            PageName = "Analiz Oluşturma",
-                            PageUrl = "analiz-olusturma",
-                            ParentId = Laboratuvar.Id,
-                            OrderNumber = 2
-                        });
+                        context.Add(AnalisysCreateModel);
                     }
                     context.SaveChanges();
                     transaction.Commit();
                 }
             }
 
+     
             #endregion
 
             #region Muhasebe

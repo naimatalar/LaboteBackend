@@ -16,7 +16,8 @@ namespace Labote.Core.Entities
         public string Unit { get; set; }
         public virtual ICollection<SampleExaminationDevice> SampleExaminationDevices { get; set; }
         public virtual ICollection<SampleExaminationPriceCurrency> SampleExaminationPriceCurrencies { get; set; }
-        public virtual ICollection<SampleExaminationResultValueType> SampleExaminationResultValueTypes { get; set; }   
         public virtual ICollection<SampleExaminationSampleAccept> SampleExaminationSampleAccepts { get; set; }
+        public virtual ICollection<AnalisysRecordDeviceValue> AnalisysRecordDeviceValues { get; set; }
+         
     }
 }

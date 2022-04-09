@@ -46,6 +46,23 @@ namespace Labote.Api.Controllers
             PageResponse.Data = laboratories;
             return PageResponse;
         }
+        [HttpGet("GetLaboratoryListByCurrentUser")]
+        public async Task<dynamic> GetLaboratoryListByCurrentUser()
+        {
+            var userId = User.Identity.UserId();
+
+           
+            var laboratories = _context.LaboratoryUsers.Where(x => x.LaboteUserId == userId).Select(x => new
+            {
+                x.Laboratory.Name,
+                x.Laboratory.Code,
+                x.Laboratory.Description,
+                x.Laboratory.Id,
+             
+            }).ToList();
+            PageResponse.Data = laboratories;
+            return PageResponse;
+        }
         [HttpGet("GetAllCurrentLaboratory")]
         public async Task<dynamic> GetAllCurrentLaboratory()
         {

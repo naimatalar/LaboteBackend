@@ -8,6 +8,7 @@ namespace Labote.Api.BindingModel.RequestModel
     public class SampleAcceptCreateModel
     {
         public Guid? Id { get; set; }
+        public Guid LaboratoryId { get; set; }
         public string SampleName { get; set; }
         public Guid CurrentCustomerId { get; set; }
         public string Quantity { get; set; }

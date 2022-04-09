@@ -15,6 +15,9 @@ namespace Labote.Core.Entities
         public Guid UserTopicId { get; set; }
         public virtual ICollection<LaboratoryUser> LaboratoryUsers { get; set; }
         public virtual ICollection<LaboratoryDevice> LaboratoryDevice { get; set; }
+        public virtual ICollection<Chemical> Chemicals { get; set; }
+        public virtual ICollection<SampleAccept> SampleAccepts { get; set; }
+
 
 
     }

@@ -8,6 +8,8 @@ namespace Labote.Core.Entities
 {
     public class SampleAccept : BaseEntity
     {
+        public Laboratory Laboratory { get; set; }
+        public Guid LaboratoryId { get; set; }
         public string SampleName { get; set; }
         public CurrentCustomer CurrentCustomer { get; set; }
         public Guid CurrentCustomerId { get; set; }
@@ -29,7 +31,7 @@ namespace Labote.Core.Entities
         public Constants.Enums.SampleAcceptBringingType SampleAcceptBringingType { get; set; }
         public string Description { get; set; }
         public virtual ICollection<SampleExaminationSampleAccept> SampleExaminationSampleAccepts { get; set; }
-
+   public virtual ICollection<AnalisysCreateRecord> AnalisysCreateRecords { get; set; }
         public LaboteUser ConfirmToGetLaboratoryUser { get; set; }
         public Guid? ConfirmToGetLaboratoryUserId { get; set; }
 
