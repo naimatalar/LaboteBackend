@@ -18,6 +18,7 @@ namespace Labote.Core.Entities
         public virtual ICollection<Chemical> Chemicals { get; set; }
         public virtual ICollection<SampleAccept> SampleAccepts { get; set; }
 
+        public virtual ICollection<SampleExamination> SampleExaminations { get; set; }
 
 
     }

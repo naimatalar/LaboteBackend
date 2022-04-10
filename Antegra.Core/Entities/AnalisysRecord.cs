@@ -12,6 +12,8 @@ namespace Labote.Core.Entities
         public Guid AnalisysCreateRecordId { get; set; }
         public virtual ICollection<AnalisysRecordDeviceValue> AnalisysRecordDeviceValues { get; set; }
         public virtual ICollection<AnalisysRecordSampleExaminationResultValue> AnalisysRecordSampleExaminationResultValues { get; set; }
+    
+
 
     }
 }

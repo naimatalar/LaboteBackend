@@ -10,6 +10,9 @@ namespace Labote.Core.Entities
     {
         public UserTopic UserTopic { get; set; }
         public Guid UserTopicId { get; set; }
+
+        public Laboratory Laboratory { get; set; }
+        public Guid LaboratoryId { get; set; }
         public string Name { get; set; }
         public string SampleMethod { get; set; }
         public string Description { get; set; }

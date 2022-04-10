@@ -98,6 +98,9 @@ namespace Labote.Core.Migrations
                     b.Property<Guid?>("CreatorUserId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<Guid?>("DeviceId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<Guid>("DeviceResultValueTypeId")
                         .HasColumnType("uniqueidentifier");
 
@@ -116,6 +119,8 @@ namespace Labote.Core.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("AnalisysRecordId");
+
+                    b.HasIndex("DeviceId");
 
                     b.HasIndex("DeviceResultValueTypeId");
 
@@ -804,6 +809,9 @@ namespace Labote.Core.Migrations
                     b.Property<bool>("IsDelete")
                         .HasColumnType("bit");
 
+                    b.Property<Guid>("LaboratoryId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
@@ -817,6 +825,8 @@ namespace Labote.Core.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("LaboratoryId");
 
                     b.HasIndex("UserTopicId");
 
@@ -1203,6 +1213,10 @@ namespace Labote.Core.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("Labote.Core.Entities.Device", null)
+                        .WithMany("AnalisysRecordDeviceValues")
+                        .HasForeignKey("DeviceId");
+
                     b.HasOne("Labote.Core.Entities.DeviceResultValueType", "DeviceResultValueType")
                         .WithMany("AnalisysRecordDeviceValues")
                         .HasForeignKey("DeviceResultValueTypeId")
@@ -1295,7 +1309,7 @@ namespace Labote.Core.Migrations
             modelBuilder.Entity("Labote.Core.Entities.DeviceResultValueType", b =>
                 {
                     b.HasOne("Labote.Core.Entities.Device", "Device")
-                        .WithMany("DeviceResultValueType")
+                        .WithMany("DeviceResultValueTypes")
                         .HasForeignKey("DeviceId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -1391,11 +1405,19 @@ namespace Labote.Core.Migrations
 
             modelBuilder.Entity("Labote.Core.Entities.SampleExamination", b =>
                 {
+                    b.HasOne("Labote.Core.Entities.Laboratory", "Laboratory")
+                        .WithMany("SampleExaminations")
+                        .HasForeignKey("LaboratoryId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
                     b.HasOne("Labote.Core.Entities.UserTopic", "UserTopic")
                         .WithMany("SampleExaminations")
                         .HasForeignKey("UserTopicId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
+
+                    b.Navigation("Laboratory");
 
                     b.Navigation("UserTopic");
                 });
@@ -1556,9 +1578,11 @@ namespace Labote.Core.Migrations
 
             modelBuilder.Entity("Labote.Core.Entities.Device", b =>
                 {
+                    b.Navigation("AnalisysRecordDeviceValues");
+
                     b.Navigation("DeviceResultValueSampleUnitReferences");
 
-                    b.Navigation("DeviceResultValueType");
+                    b.Navigation("DeviceResultValueTypes");
 
                     b.Navigation("LaboratoryDevices");
 
@@ -1579,6 +1603,8 @@ namespace Labote.Core.Migrations
                     b.Navigation("LaboratoryUsers");
 
                     b.Navigation("SampleAccepts");
+
+                    b.Navigation("SampleExaminations");
                 });
 
             modelBuilder.Entity("Labote.Core.Entities.LaboteUser", b =>

@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Labote.Core.Migrations
 {
-    public partial class fdfdgdffdh : Migration
+    public partial class gfsdgd : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -236,32 +236,6 @@ namespace Labote.Core.Migrations
                         principalTable: "UserTopics",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "SampleExaminations",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    UserTopicId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    SampleMethod = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Unit = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    CreateDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    IsDelete = table.Column<bool>(type: "bit", nullable: false),
-                    IsActive = table.Column<bool>(type: "bit", nullable: false),
-                    CreatorUserId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_SampleExaminations", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_SampleExaminations_UserTopics_UserTopicId",
-                        column: x => x.UserTopicId,
-                        principalTable: "UserTopics",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -593,6 +567,69 @@ namespace Labote.Core.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "SampleExaminations",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    UserTopicId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    LaboratoryId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    SampleMethod = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Unit = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CreateDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    IsDelete = table.Column<bool>(type: "bit", nullable: false),
+                    IsActive = table.Column<bool>(type: "bit", nullable: false),
+                    CreatorUserId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_SampleExaminations", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_SampleExaminations_Laboratories_LaboratoryId",
+                        column: x => x.LaboratoryId,
+                        principalTable: "Laboratories",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_SampleExaminations_UserTopics_UserTopicId",
+                        column: x => x.UserTopicId,
+                        principalTable: "UserTopics",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "AnalisysCreateRecords",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    LaboteUserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    SampleAcceptId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    AnalysisStartDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    CreateDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    IsDelete = table.Column<bool>(type: "bit", nullable: false),
+                    IsActive = table.Column<bool>(type: "bit", nullable: false),
+                    CreatorUserId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AnalisysCreateRecords", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_AnalisysCreateRecords_AspNetUsers_LaboteUserId",
+                        column: x => x.LaboteUserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_AnalisysCreateRecords_SampleAccepts_SampleAcceptId",
+                        column: x => x.SampleAcceptId,
+                        principalTable: "SampleAccepts",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "SampleExaminationDevice",
                 columns: table => new
                 {
@@ -672,36 +709,6 @@ namespace Labote.Core.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "AnalisysCreateRecords",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    LaboteUserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    SampleAcceptId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    AnalysisStartDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    CreateDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    IsDelete = table.Column<bool>(type: "bit", nullable: false),
-                    IsActive = table.Column<bool>(type: "bit", nullable: false),
-                    CreatorUserId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_AnalisysCreateRecords", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_AnalisysCreateRecords_AspNetUsers_LaboteUserId",
-                        column: x => x.LaboteUserId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_AnalisysCreateRecords_SampleAccepts_SampleAcceptId",
-                        column: x => x.SampleAcceptId,
-                        principalTable: "SampleAccepts",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "SampleExaminationSampleAccepts",
                 columns: table => new
                 {
@@ -760,6 +767,7 @@ namespace Labote.Core.Migrations
                     AnalisysRecordId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     DeviceResultValueTypeId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Value = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    DeviceId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     SampleExaminationId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     CreateDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     IsDelete = table.Column<bool>(type: "bit", nullable: false),
@@ -779,6 +787,12 @@ namespace Labote.Core.Migrations
                         name: "FK_AnalisysRecordDeviceValues_DeviceResultValueTypes_DeviceResultValueTypeId",
                         column: x => x.DeviceResultValueTypeId,
                         principalTable: "DeviceResultValueTypes",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_AnalisysRecordDeviceValues_Devices_DeviceId",
+                        column: x => x.DeviceId,
+                        principalTable: "Devices",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
@@ -833,6 +847,11 @@ namespace Labote.Core.Migrations
                 name: "IX_AnalisysRecordDeviceValues_AnalisysRecordId",
                 table: "AnalisysRecordDeviceValues",
                 column: "AnalisysRecordId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AnalisysRecordDeviceValues_DeviceId",
+                table: "AnalisysRecordDeviceValues",
+                column: "DeviceId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_AnalisysRecordDeviceValues_DeviceResultValueTypeId",
@@ -1002,6 +1021,11 @@ namespace Labote.Core.Migrations
                 name: "IX_SampleExaminationResultValueTypes_SampleExaminationId",
                 table: "SampleExaminationResultValueTypes",
                 column: "SampleExaminationId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_SampleExaminations_LaboratoryId",
+                table: "SampleExaminations",
+                column: "LaboratoryId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_SampleExaminations_UserTopicId",

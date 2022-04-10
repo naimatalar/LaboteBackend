@@ -16,9 +16,10 @@ namespace Labote.Core.Entities
         public UserTopic UserTopic { get; set; }
         public Guid UserTopicId { get; set; }
         public virtual ICollection<LaboratoryDevice> LaboratoryDevices { get; set; }
-        public virtual ICollection<DeviceResultValueType> DeviceResultValueType { get; set; }
+        public virtual ICollection<DeviceResultValueType> DeviceResultValueTypes { get; set; }
         public virtual ICollection<DeviceResultValueSampleUnitReference> DeviceResultValueSampleUnitReferences { get; set; }
         public virtual ICollection<SampleExaminationDevice> SampleExaminationDevices { get; set; }
+        public virtual ICollection<AnalisysRecordDeviceValue> AnalisysRecordDeviceValues { get; set; }
 
 
     }

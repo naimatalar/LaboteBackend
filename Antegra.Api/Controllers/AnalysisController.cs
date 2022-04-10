@@ -7,6 +7,7 @@ using Labote.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -145,78 +146,142 @@ namespace Labote.Api.Controllers
         {
 
 
-            SampleAccept SampleAccepted = new SampleAccept();
 
-            var dd =( from acr in _context.AnalisysCreateRecords.Where(x => x.Id == Id)
-                     from se in _context.SampleExaminationSampleAccepts.Where(x => x.SampleAcceptId == acr.SampleAcceptId)
-                     select
-                            new
-                            {
-                                se.Id,
-                                SampleExaminationName= se.SampleExamination.Name,
-                                SampleAccepted=se.SampleAccept,
-                                Devices = se.SampleExamination.SampleExaminationDevices.Select(x => new
-                                {
-                                    x.Device.Id,
-                                    x.Device.Name,
-                                    x.Device.Model,
-                                    DeviceResultValueType = x.Device.DeviceResultValueType.Select(z => new
-                                    {
-                                        z.Id,
-                                        z.MeasurementUnit,
-                                        z.MeasureUnitSymbol,
-                                        MeasureUnitType=(int)z.MeasureUnitType,
-                                        z.MeasurementUnitLongName,
-                                        
-                                    })
+            var dd = (from acr in _context.AnalisysCreateRecords.Where(x => x.Id == Id)
+                      from se in _context.SampleExaminationSampleAccepts.Where(x => x.SampleAcceptId == acr.SampleAcceptId)
+                      select
+                             new
+                             {
+                                 se.Id,
+                                 SampleExaminationName = se.SampleExamination.Name,
+                                 SampleMethod = se.SampleExamination.SampleMethod,
+                                 BarcodeImage = Barcode.Generate(se.SampleAccept.Barcode),
+                                 SampleName = se.SampleAccept.SampleName,
+                                 SampleAcceptedReturnType = se.SampleAccept.SampleReturnType.GetDisiplayDescription(),
+                                 SampleAcceptedSerialNo = se.SampleAccept.SerialNo,
+                                 SampleAcceptedQuantity = se.SampleAccept.Quantity,
+                                 SampleAcceptUnitType = se.SampleAccept.UnitType,
+                                 SampleAcceptCurrentCustomerName = se.SampleAccept.CurrentCustomer.Name,
+                                 SampleAcceptCurrentCustomerTitle = se.SampleAccept.CurrentCustomer.Title,
+                                 SampleAcceptBarcode = se.SampleAccept.Barcode,
+                                 SampleAcceptLaboteUser = se.SampleAccept.LaboteUser.FirstName + " " + se.SampleAccept.LaboteUser.Lastname,
+                                 SampleAcceptBringingType = se.SampleAccept.SampleAcceptBringingType.GetDisiplayDescription(),
+                                 AcceptedDate = se.SampleAccept.AcceptedDate.ToString("dd/MM/yyyy hh:MM"),
 
-                                })
-                            }).ToList();
+                                 Devices = se.SampleExamination.SampleExaminationDevices.Select(x => new
+                                 {
+                                     x.Device.Id,
+                                     x.Device.Name,
+                                     x.Device.Model,
+                                     DeviceResultValueType = x.Device.DeviceResultValueTypes.Select(z => new
+                                     {
+                                         z.Id,
+                                         z.MeasurementUnit,
+                                         z.MeasureUnitSymbol,
+                                         MeasureUnitType = (int)z.MeasureUnitType,
+                                         z.MeasurementUnitLongName,
 
-            PageResponse.Data = new {List=dd,SampleAccepted};
+
+                                     })
+
+                                 })
+                             }).ToList();
+
+            PageResponse.Data = new { List = dd };
             return PageResponse;
 
         }
 
 
-        [HttpPost("SetDeviceValues")]
-        [PermissionCheck(Action = pageName)]
-        public async Task<dynamic> SetDeviceValues(SampleConfirmCreateModel model)
+        [HttpGet("GetDeviceValues/{deviceId}/{analisysCreateRecordId}")]
+        public async Task<dynamic> GetDeviceValues(Guid deviceId,Guid analisysCreateRecordId)
         {
-            using (var context = new LaboteContext())
+            string JsonData = "{";
+            var data = _context.AnalisysRecords.Where(x => x.AnalisysCreateRecordId == analisysCreateRecordId).Include(x=>x.AnalisysRecordDeviceValues);
+            if (data.Any())
             {
-                using (var transaction = context.Database.BeginTransaction())
+                var resultType=data.SelectMany(x=>x.AnalisysRecordDeviceValues).Where(x=>x.DeviceResultValueType.DeviceId==deviceId).ToList();
+                var indexData = 0;
+                foreach (var item in resultType)
                 {
-                    var data = context.SampleAccepts.Where(x => x.Id == model.SampleAcceptId).FirstOrDefault();
-                    data.DeliveyToLaboratoeyDate = model.ConfirmDate;
-                    data.ConfirmToGetLaboratoryUserId = User.Identity.UserId();
-                    data.SampleAcceptStatus = Core.Constants.Enums.SampleAcceptStatus.SubmitToLaboratory;
-                    context.Update(data);
-                    context.SaveChanges();
-                    transaction.Commit();
-                }
-            }
-
-            using (var context = new LaboteContext())
-            {
-                using (var transaction = context.Database.BeginTransaction())
-                {
-                    var sampleExaminationCreateRecord = new AnalisysCreateRecord
+                    JsonData += "\""+item.DeviceResultValueTypeId+"\":\""+item.Value+"\"";
+                    if (resultType.Count!=indexData+1)
                     {
-                        AnalysisStartDate = model.ConfirmDate,
-                        LaboteUserId = User.Identity.UserId(),
-                        SampleAcceptId = model.SampleAcceptId,
+                        JsonData += ",";
+                    }
+                    
 
-                    };
-                    var data = context.AnalisysCreateRecords.Add(sampleExaminationCreateRecord);
-                    context.SaveChanges();
-                    transaction.Commit();
-                }
+                    indexData++;
+                } 
+                JsonData += "}";
+                PageResponse.Data = JsonData;
             }
-
+          
             return PageResponse;
 
         }
+
+
+
+        [HttpPost("SetDeviceValue")]
+        [PermissionCheck(Action = pageName)]
+        public async Task<dynamic> SetDeviceValue(CreateValueObject model)
+        {
+            var data = JsonConvert.DeserializeObject<dynamic>(model.data.ToString());
+            var deviceId = (Guid)data?["deviceId"];
+            var analisysCreateRecordId = (Guid)data?["createAnalisysRecordId"];
+
+            if (deviceId == null)
+            {
+                PageResponse.IsError = true;
+                PageResponse.Message = "Kayıt yapılamadı";
+            }
+            var analisysrecord = new AnalisysRecord();
+            using (var context = new LaboteContext())
+            {
+                using (var transaction = context.Database.BeginTransaction())
+                {
+                    var analisysRecord = context.AnalisysRecords.Where(x => x.AnalisysCreateRecordId == analisysCreateRecordId).FirstOrDefault();
+                    if (analisysRecord == null)
+                    {
+                        analisysrecord = new AnalisysRecord
+                        {
+                            AnalisysCreateRecordId = analisysCreateRecordId
+                        };
+                        context.AnalisysRecords.Add(analisysrecord);
+                        context.SaveChanges();
+                    }
+                    else
+                    {
+                        analisysrecord = analisysRecord;
+                        var recDeviceValue = context.AnalisysRecordDeviceValues.Include(x=>x.DeviceResultValueType).Where(x => x.AnalisysRecordId == analisysRecord.Id&& x.DeviceResultValueType.DeviceId==deviceId);
+                        context.AnalisysRecordDeviceValues.RemoveRange(recDeviceValue);
+                        context.SaveChanges();
+                    }
+                    transaction.Commit();
+                }
+
+            }
+
+            var deviceRes = _context.Devices.Where(x => x.Id == deviceId).SelectMany(x => x.DeviceResultValueTypes);
+            foreach (var item in deviceRes)
+            {
+                var Value =(string)data?[item.Id.ToString()];
+                if (!string.IsNullOrEmpty(Value))
+                {
+                    _context.AnalisysRecordDeviceValues.Add(new AnalisysRecordDeviceValue
+                    {
+                        AnalisysRecordId = analisysrecord.Id,
+                        DeviceResultValueTypeId = item.Id,
+                        Value = Value,
+                    }); 
+                }
+            }
+            _context.SaveChanges();
+
+            return PageResponse;
+        }
+
 
 
     }

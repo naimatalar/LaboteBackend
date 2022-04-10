@@ -83,13 +83,16 @@ namespace Labote.Core
        .HasOne(p => p.LaboteUser)
        .WithMany(b => b.SampleAccepts).OnDelete(DeleteBehavior.Restrict);
 
-                    builder.Entity<Laboratory>()
-         .HasMany(p => p.SampleAccepts)
-          .WithOne(b => b.Laboratory).OnDelete(DeleteBehavior.Restrict);
-                builder.Entity<AnalisysRecordDeviceValue>()
-         .HasOne(p => p.DeviceResultValueType)
-          .WithMany(b => b.AnalisysRecordDeviceValues).OnDelete(DeleteBehavior.Restrict);
-  
+            builder.Entity<Laboratory>()
+ .HasMany(p => p.SampleAccepts)
+  .WithOne(b => b.Laboratory).OnDelete(DeleteBehavior.Restrict);
+            builder.Entity<AnalisysRecordDeviceValue>()
+     .HasOne(p => p.DeviceResultValueType)
+      .WithMany(b => b.AnalisysRecordDeviceValues).OnDelete(DeleteBehavior.Restrict);
+
+            builder.Entity<SampleExamination>()
+      .HasOne(p => p.Laboratory)
+       .WithMany(b => b.SampleExaminations).OnDelete(DeleteBehavior.Restrict);
         }
 
 
